@@ -29,5 +29,5 @@ eg.
 ```qmlview C:/myproject/button.qml```
 
 # Contribute
-Fork this repository and make commit to your fork.
-Send the pull request to the only, master branch.
+Fork this repository and make commits to your fork.
+Make a pull request to the only, master branch.
