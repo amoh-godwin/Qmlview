@@ -7,10 +7,10 @@ qmlscene, which was used to preview qml source code before it is loaded
 by any C++, Java, or python code.
 
 # Usage
-'''qmlview path/to/file'''
+```qmlview path/to/file```
 
 eg.
-'''qmlview C:/myproject/button.qml'''
+```qmlview C:/myproject/button.qml```
 
 # Install
 
