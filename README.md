@@ -19,7 +19,7 @@ eg.
 ### 64-bit version
 64-bit version is available for download at https://github.com/amoh-godwin/Qmlview/releases/tag/V1.0
 
-##3 32-bit version
+### 32-bit version
 No release for Windows version 32-bit has been built yet
 
 ## Mac Os
