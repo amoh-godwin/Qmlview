@@ -20,7 +20,7 @@ No release for Windows version 32-bit has been built yet
 No release for Mac has been built yet
 
 ## Linux
-No release for Linux has been built yet
+Linux version is available at https://github.com/amoh-godwin/Qmlview/releases/tag/V2.0
 
 # Usage
 ```qmlview path/to/file```
