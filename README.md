@@ -24,9 +24,13 @@ Linux version is available at https://github.com/amoh-godwin/Qmlview/releases/ta
 
 # Usage
 ```qmlview path/to/file```
+OR
+```./qmlview path/to/file```
 
 eg.
 ```qmlview C:/myproject/button.qml```
+OR
+```./qmlview C:/myproject/button.qml```
 
 # Contribute
 Fork this repository and make commits to your fork.
