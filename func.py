@@ -1,5 +1,13 @@
 import re
 import os
+from PyQt5.QtCore import QFile, QIODevice, QResource
+QResource.registerResource("./resource.rcc")
+
+replace_file = QFile(":/rep.txt")
+replace_file.open(QIODevice.ReadOnly)
+rep_data = replace_file.readAll()
+replace_data = str(rep_data, 'utf-8')
+print("rep: ", rep_data)
 
 class CheckStyle():
 
@@ -27,7 +35,7 @@ class FixQml():
 
     def __init__(self, filename):
         self.original_file = filename
-        self.replacement_qml = os.path.join("H:/GitHub/Qmlview", "resources/replacement_qml.qml")
+        self.replacement_qml = ":/qml/replacement_qml.qml" # os.path.join("H:/GitHub/Qmlview", "resources/replacement_qml.qml")
         self.search_keywords = ("ApplicationWindow", "Window")
         self.found_entry = ""
 
@@ -64,14 +72,19 @@ class FixQml():
         # put in a parent
         with open(self.original_file, 'r') as orig_file:
             ori_data = orig_file.read()
-            
+
             splits = ori_data.split(self.found_entry, 1)
             top_data = splits[0]
             bottom_data = self.found_entry + splits[1]
-        
-        with open(self.replacement_qml, 'r') as replace_file:
-            replace_data = replace_file.read()
-            
+
+        # Open with QFile
+        replace_file = QFile(":/resources/replacement_qml.qml")
+        replace_file.open(QIODevice.ReadOnly)
+        rep_data = replace_file.read(24)
+        replace_data = str(rep_data, 'utf-8')
+        print("rep: ", rep_data)
+
         final_data = top_data + replace_data + "\n" + bottom_data + "\n" + "}"
-        
+        print(final_data)
+
         return final_data
