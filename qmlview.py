@@ -10,7 +10,6 @@ app = QGuiApplication(sys.argv)
 app.setWindowIcon(QIcon('./resources/icons/logo.png'))
 engine = QQmlApplicationEngine()
 
-
 def chk_style():
     # check if it contains styling
     chk = CheckStyle(sys.argv[1])
@@ -32,6 +31,12 @@ def fix_qml():
     else:
         engine.loadData(bytes(ret_data, 'utf-8'), QUrl(sys.argv[1]))
 
+    # check for qml loading errors and exit the app
+    if engine.rootObjects():
+        pass
+    else:
+        sys.exit(1)
+
 
 def run():
     # run the for engine
@@ -44,5 +49,6 @@ if len(sys.argv) > 1:
     run()
 else:
     print('Usage: qmlview file or ./qmlview file')
+    sys.exit(2)
 
 sys.exit(app.exec_())

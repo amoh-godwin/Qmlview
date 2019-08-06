@@ -3,12 +3,6 @@ import os
 from PyQt5.QtCore import QFile, QIODevice, QResource
 QResource.registerResource("./resource.rcc")
 
-replace_file = QFile(":/rep.txt")
-replace_file.open(QIODevice.ReadOnly)
-rep_data = replace_file.readAll()
-replace_data = str(rep_data, 'utf-8')
-print("rep: ", rep_data)
-
 class CheckStyle():
 
 
@@ -78,13 +72,11 @@ class FixQml():
             bottom_data = self.found_entry + splits[1]
 
         # Open with QFile
-        replace_file = QFile(":/resources/replacement_qml.qml")
+        replace_file = QFile(self.replacement_qml)
         replace_file.open(QIODevice.ReadOnly)
-        rep_data = replace_file.read(24)
+        rep_data = replace_file.readAll()
         replace_data = str(rep_data, 'utf-8')
-        print("rep: ", rep_data)
 
         final_data = top_data + replace_data + "\n" + bottom_data + "\n" + "}"
-        print(final_data)
 
         return final_data
