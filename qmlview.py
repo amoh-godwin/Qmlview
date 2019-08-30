@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 import sys
 import os
-from PyQt5.QtCore import QUrl
+from PyQt5.QtCore import QUrl, QResource
 from PyQt5.QtGui import QGuiApplication, QIcon
 from PyQt5.QtQml import QQmlApplicationEngine
 from func import FixQml, CheckStyle
-
+QResource.registerResource("./resource")
 app = QGuiApplication(sys.argv)
-app.setWindowIcon(QIcon('./resources/icons/logo.png'))
+app.setWindowIcon(QIcon(':/icons/logo.png'))
 engine = QQmlApplicationEngine()
 
 def chk_style():
