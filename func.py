@@ -1,5 +1,4 @@
 import re
-import os
 from PyQt5.QtCore import QFile, QIODevice, QResource
 QResource.registerResource("./resource.rcc")
 
@@ -29,7 +28,7 @@ class FixQml():
 
     def __init__(self, filename):
         self.original_file = filename
-        self.replacement_qml = ":/qml/replacement_qml.qml" # os.path.join("H:/GitHub/Qmlview", "resources/replacement_qml.qml")
+        self.replacement_qml = ":/qml/replacement_qml.qml"
         self.search_keywords = ("ApplicationWindow", "Window")
         self.found_entry = ""
 
