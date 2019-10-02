@@ -29,7 +29,7 @@ class FixQml():
     def __init__(self, filename):
         self.original_file = filename
         self.replacement_qml = ":/qml/replacement_qml.qml"
-        self.search_keywords = ("ApplicationWindow", "Window")
+        self.search_keywords = ("ApplicationWindow" or "Window")
         self.found_entry = ""
 
 
@@ -46,16 +46,11 @@ class FixQml():
 
         # find parent
         with open(self.original_file, 'r') as orig_file:
-            data = orig_file.read(1024)
-            info = re.findall('\n\s*[A-Z].*?.*?.*? {', data)
+            lines = orig_file.readlines()
+            checked = [n.split(" ", 1)[0] for n in lines if n != "\n"]
 
-        splits = re.split("\n?\s+", info[0])
-        clear_stat = splits[-2] + " " + splits[-1]
-        self.found_entry = clear_stat
-        # Just the word without the curly braces
-        clean_pat = splits[-2]
-
-        if clean_pat in self.search_keywords:
+        # find if it has a window parent
+        if self.search_keywords in checked:
             return True
         else:
             return False
@@ -64,18 +59,41 @@ class FixQml():
 
         # put in a parent
         with open(self.original_file, 'r') as orig_file:
-            ori_data = orig_file.read()
+            lines = orig_file.readlines()
+        
+        # Put in the Controls import statement if not in there
+        # remove the last space before the version nos.
+        checked = [n.split(" ", 2)[1] for n in lines \
+                   if n.startswith('import') and n != "\n"]
 
-            splits = ori_data.split(self.found_entry, 1)
-            top_data = splits[0]
-            bottom_data = self.found_entry + splits[1]
+        if "QtQuick.Controls" in checked:
+            pass
+        else:
+            lines.insert(1, 'import QtQuick.Controls 2.0\n')
+
+        a = [n for n in lines if n.startswith('import')]
+        last_index = lines.index(a[-1])
+        if lines[last_index + 1] == '\n':
+            # insert code at lane two
+            insert_index = last_index + 2
+        else:
+            # insert code at lane one
+            insert_index = last_index + 1
 
         # Open with QFile
         replace_file = QFile(self.replacement_qml)
         replace_file.open(QIODevice.ReadOnly)
         rep_data = replace_file.readAll()
         replace_data = str(rep_data, 'utf-8')
+        
+        # insert replacement code here
+        lines.insert(insert_index, replace_data + "\n")
+        # append closing bracket
+        lines.append("}")
 
-        final_data = top_data + replace_data + "\n" + bottom_data + "\n" + "}"
-
+        final_data = ""
+        # convert list to string
+        for line in lines:
+            final_data += line
+ 
         return final_data
