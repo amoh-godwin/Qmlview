@@ -21,6 +21,14 @@ def chk_style():
         os.environ['QT_QUICK_CONTROLS_STYLE'] = style_name
 
 
+def _construct_Qurl(path):
+    url = QUrl()
+    url.setScheme("file")
+    raw_path = "/" + os.path.dirname(path) + "/"
+    url.setPath(raw_path)
+    return url
+
+
 def fix_qml():
     # fix if it is a component
     fix = FixQml(sys.argv[1])
@@ -29,7 +37,8 @@ def fix_qml():
     if status:
         engine.load(sys.argv[1])
     else:
-        engine.loadData(bytes(ret_data, 'utf-8'), QUrl(sys.argv[1]))
+        url = _construct_Qurl(sys.argv[1])
+        engine.loadData(bytes(ret_data, 'utf-8'), url)
 
     # check for qml loading errors and exit the app
     if engine.rootObjects():
