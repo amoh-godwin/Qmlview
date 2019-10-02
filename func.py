@@ -95,5 +95,5 @@ class FixQml():
         # convert list to string
         for line in lines:
             final_data += line
- 
+
         return final_data

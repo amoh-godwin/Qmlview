@@ -29,8 +29,8 @@ ApplicationWindow {
         var st1 = this.screen.width - long_width
         var st2 = this.screen.height - long_height
 
-        x = st1/2
-        y = st2/2
+        this.setX(st1/2)
+        this.setY(st2/2)
 
         width = long_width
         height = long_height
