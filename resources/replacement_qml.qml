@@ -1,7 +1,6 @@
-import QtQuick.Controls 2.0
 
 ApplicationWindow {
     visible: true
 
-    width: contentItem.width
-    height: contentItem.height
+    width: contentItem.implicitWidth
+    height: contentItem.implicitHeight
