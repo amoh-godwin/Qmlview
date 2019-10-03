@@ -1,6 +1,6 @@
 import re
 from PyQt5.QtCore import QFile, QIODevice, QResource
-QResource.registerResource("./resource.rcc")
+QResource.registerResource("resource.rcc")
 
 class CheckStyle():
 
