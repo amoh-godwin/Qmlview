@@ -50,6 +50,11 @@ def fix_qml():
         sys.exit(1)
 
 
+def put_into_frame():
+
+    pass
+
+
 def run():
     # run the for engine
     chk_style()
@@ -57,11 +62,17 @@ def run():
     fix_qml()
 
 
+def run_in_frame():
+
+    chk_style()
+
+    put_into_frame()
+
 if len(sys.argv) > 1:
     # check if it comes with parameters
-    if len(sys.argv) > 2:
+    if len(sys.argv) > 2 and sys.argv[2] == '-phone':
         # has a parameter
-        pass
+        run_in_frame()
     else:
         # it has no other parameter
         run()
