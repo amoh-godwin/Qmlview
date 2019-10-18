@@ -7,11 +7,12 @@ class Check():
 
     def __init__(self, filename):
         self.filename = filename
+        self.search_keywords = ("ApplicationWindow" or "Window")
 
     def check_for_parent(self):
 
         # find parent
-        with open(self.original_file, 'r') as orig_file:
+        with open(self.filename, 'r') as orig_file:
             lines = orig_file.readlines()
             checked = [n.split(" ", 1)[0] for n in lines if n != "\n"]
 
@@ -42,7 +43,6 @@ class FixQml():
     def __init__(self, filename):
         self.original_file = filename
         self.replacement_qml = ":/qml/replacement_qml.qml"
-        self.search_keywords = ("ApplicationWindow" or "Window")
         self.found_entry = ""
 
     def put_in_parent(self):
