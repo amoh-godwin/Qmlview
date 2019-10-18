@@ -54,7 +54,13 @@ def fix_qml():
 
 def put_into_frame():
 
-    pass
+    chk = Check(sys.argv[1])
+    status = chk.check_for_parent()
+
+    if status:
+        pass
+    else:
+        pass
 
 
 def run():
