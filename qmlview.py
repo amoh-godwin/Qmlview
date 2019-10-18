@@ -5,7 +5,7 @@ from PyQt5.QtCore import QUrl, QResource
 from PyQt5.QtGui import QGuiApplication, QIcon
 from PyQt5.QtQml import QQmlApplicationEngine
 from func import FixQml, CheckStyle
-
+from frame import PhoneFrame
 
 QResource.registerResource("resource.rcc")
 
