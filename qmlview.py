@@ -5,7 +5,10 @@ from PyQt5.QtCore import QUrl, QResource
 from PyQt5.QtGui import QGuiApplication, QIcon
 from PyQt5.QtQml import QQmlApplicationEngine
 from func import FixQml, CheckStyle
-QResource.registerResource("resource")
+
+
+QResource.registerResource("resource.rcc")
+
 app = QGuiApplication(sys.argv)
 app.setWindowIcon(QIcon(':/icons/logo.png'))
 engine = QQmlApplicationEngine()
@@ -14,7 +17,7 @@ def chk_style():
     # check if it contains styling
     chk = CheckStyle(sys.argv[1])
     style_name = chk.check_style()
-    
+
     #os.environ['QT_QUICK_CONTROLS_STYLE'] = style_name
 
     if style_name:
@@ -55,7 +58,13 @@ def run():
 
 
 if len(sys.argv) > 1:
-    run()
+    # check if it comes with parameters
+    if len(sys.argv) > 2:
+        # has a parameter
+        pass
+    else:
+        # it has no other parameter
+        run()
 else:
     print('Usage: qmlview file or ./qmlview file')
     sys.exit(2)
