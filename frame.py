@@ -12,3 +12,10 @@ class PhoneFrame():
 
         self.original_file = filename
 
+    def parentised_handling(self):
+
+        pass
+
+    def unparentised_handling(self):
+
+        pass

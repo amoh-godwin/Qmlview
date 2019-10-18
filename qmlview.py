@@ -56,11 +56,15 @@ def put_into_frame():
 
     chk = Check(sys.argv[1])
     status = chk.check_for_parent()
+    frm = PhoneFrame(sys.argv[1])
 
     if status:
-        pass
+        ret_data = frm.parentised_handling()
     else:
-        pass
+        ret_data = frm.unparentised_handling()
+
+    url = _construct_Qurl(sys.argv[1])
+    engine.loadData(bytes(ret_data, 'utf-8'), url)
 
 
 def run():
