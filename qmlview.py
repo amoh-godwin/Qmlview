@@ -54,6 +54,7 @@ def fix_qml():
 
 def put_into_frame():
 
+    print('hre for all')
     chk = Check(sys.argv[1])
     status = chk.check_for_parent()
     frm = PhoneFrame(sys.argv[1])
@@ -82,7 +83,7 @@ def run_in_frame():
 
 if len(sys.argv) > 1:
     # check if it comes with parameters
-    if len(sys.argv) > 2 and sys.argv[2] == '-phone':
+    if len(sys.argv) > 2 and sys.argv[2] == '--phone':
         # has a parameter
         run_in_frame()
     else:

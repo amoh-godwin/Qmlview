@@ -53,10 +53,12 @@ class FixQml():
         
         # Put in the Controls import statement if not in there
         # remove the last space before the version nos.
-        checked = [n.split(" ", 2)[1] for n in lines \
+
+        # find the lines that start with import and split to get the stats only
+        imp_stats = [n.split(" ", 2)[1] for n in lines \
                    if n.startswith('import') and n != "\n"]
 
-        if "QtQuick.Controls" in checked:
+        if "QtQuick.Controls" in imp_stats:
             pass
         else:
             lines.insert(1, 'import QtQuick.Controls 2.0\n')
