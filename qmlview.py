@@ -35,11 +35,13 @@ def _construct_Qurl(path):
 def fix_qml():
     # fix if it is a component
     fix = FixQml(sys.argv[1])
-    status, ret_data = fix.handle()
+    chk = Check(sys.argv[1])
+    status = chk.check_for_parent()
 
     if status:
         engine.load(sys.argv[1])
     else:
+        ret_data = fix.put_in_parent()
         url = _construct_Qurl(sys.argv[1])
         engine.loadData(bytes(ret_data, 'utf-8'), url)
 

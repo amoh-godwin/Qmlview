@@ -8,6 +8,19 @@ class Check():
     def __init__(self, filename):
         self.filename = filename
 
+    def check_for_parent(self):
+
+        # find parent
+        with open(self.original_file, 'r') as orig_file:
+            lines = orig_file.readlines()
+            checked = [n.split(" ", 1)[0] for n in lines if n != "\n"]
+
+        # find if it has a window parent
+        if self.search_keywords in checked:
+            return True
+        else:
+            return False
+
     def check_style(self):
 
         with open(self.filename, 'r') as o_file:
@@ -31,29 +44,6 @@ class FixQml():
         self.replacement_qml = ":/qml/replacement_qml.qml"
         self.search_keywords = ("ApplicationWindow" or "Window")
         self.found_entry = ""
-
-
-    def handle(self):
-
-        # does the main
-        if self.check_for_parent():
-            return True, "0"
-        else:
-            data = self.put_in_parent()
-            return False, data
-
-    def check_for_parent(self):
-
-        # find parent
-        with open(self.original_file, 'r') as orig_file:
-            lines = orig_file.readlines()
-            checked = [n.split(" ", 1)[0] for n in lines if n != "\n"]
-
-        # find if it has a window parent
-        if self.search_keywords in checked:
-            return True
-        else:
-            return False
 
     def put_in_parent(self):
 
