@@ -8,7 +8,7 @@ ApplicationWindow {
 
     Component.onCompleted: {console.log('love')}
 
-    footer: Rectangle {
+    header: Rectangle {
         width: 400
         height: 200
         color: "dodgerblue"

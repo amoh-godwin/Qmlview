@@ -70,9 +70,9 @@ class PhoneFrame():
         # Delete ApplicationWindow
         orig_bottom_lines = self._del_parts(
                 'ApplicationWindow {', orig_bottom_lines)
-        print('orig: ', orig_bottom_lines)
-        orig_bottom_lines = self._find_part('footer:', orig_bottom_lines)
-        print('footer: ', orig_bottom_lines)
+
+        header_lines, orig_bottom_lines = self._find_part('header:',
+                                                          orig_bottom_lines)
         return
 
         # Start the search for the contentItem where we'll insert the users qml
@@ -214,7 +214,7 @@ class PhoneFrame():
                     print('')
 
         lines = [d for d in lines if d != '***']
-        return found
+        return found, lines
 
     def _put_in_part(self, indent_len, query, bottom_lines, frame_lines):
 
