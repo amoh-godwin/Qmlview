@@ -67,7 +67,23 @@ class PhoneFrame():
         n_frame_lines = frame_imps
         n_frame_lines.extend(frame_body)
 
-        return 0
+        # Delete ApplicationWindow
+        orig_bottom_lines = self._del_parts('ApplicationWindow {', orig_bottom_lines)
+ 
+        return
+
+        # Start the search for the contentItem where we'll insert the users qml
+        n_frame_lines = self._put_in_part(16,
+                                          'objectName: "ContentItem"',
+                                          orig_bottom_lines,
+                                          n_frame_lines)
+
+        final_body = ""
+        for line in n_frame_lines:
+
+            final_body += line + '\r\n'
+
+        return final_body
 
     def unparentised_handling(self):
 
@@ -87,7 +103,7 @@ class PhoneFrame():
         # last index of the import stats for the original files
         orig_imp_last_ind = orig_lines.index(orig_imp_stats[-1]) + 1
         orig_bottom_lines = orig_lines[orig_imp_last_ind:]
-        
+
         frame_imps = frame_lines[:3]
         frame_body = frame_lines[3:]
 
@@ -122,20 +138,10 @@ class PhoneFrame():
         n_frame_lines.extend(frame_body)
 
         # Start the search for the contentItem where we'll insert the users qml
-        #indent = "                "
-        #query_stat = "                " + 'objectName: "ContentItem"'
-        #begining_ind = n_frame_lines.index(query_stat) + 1
         n_frame_lines = self._put_in_part(16,
                                           'objectName: "ContentItem"',
                                           orig_bottom_lines,
                                           n_frame_lines)
-
-        # Add the original content
-        #no = begining_ind
-        #for line in orig_bottom_lines:
-        #    no += 1
-        #    nline = indent + line
-        #    n_frame_lines.insert(no, nline)
 
         final_body = ""
         for line in n_frame_lines:
@@ -143,6 +149,37 @@ class PhoneFrame():
             final_body += line + '\r\n'
 
         return final_body
+
+    def _del_parts(self, query, lines):
+
+        cc = []
+        bracks = 1
+        ind = -1
+        for line in lines:
+            ind += 1
+            if query in line:
+                lines[ind] = '***'
+                continue
+            elif '{' in line:
+                bracks += 1
+            elif '}' in line:
+                if bracks == 1:
+                    lines[ind] = '***'
+                    break
+                else:
+                    bracks -= 1
+            else:
+                if bracks == 1:
+                    lines[ind] = '***'
+                else:
+                    print('')
+
+        cc = [c for c in lines if c != '***']
+        return cc
+
+    def _find_part(self, query, lines):
+
+        bracket_count = 0
 
     def _put_in_part(self, indent_len, query, bottom_lines, frame_lines):
 
