@@ -6,6 +6,8 @@ ApplicationWindow {
     width: 400
     height: 400
 
+    Component.onCompleted: {console.log('love')}
+
     Rectangle {
         width: 400
         height: 200
