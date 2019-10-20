@@ -71,8 +71,18 @@ class PhoneFrame():
         orig_bottom_lines = self._del_parts(
                 'ApplicationWindow {', orig_bottom_lines)
 
+        menubar_lines, orig_bottom_lines = self._find_part('menuBar:',
+                                                          orig_bottom_lines)
+
         header_lines, orig_bottom_lines = self._find_part('header:',
                                                           orig_bottom_lines)
+
+        footer_lines, orig_bottom_lines = self._find_part('footer:',
+                                                          orig_bottom_lines)
+
+        # Accept the remaining as content Lines
+        # Todo properties and signal handlers should be handled as well
+        content_lines = orig_bottom_lines
         return
 
         # Start the search for the contentItem where we'll insert the users qml
@@ -215,6 +225,20 @@ class PhoneFrame():
 
         lines = [d for d in lines if d != '***']
         return found, lines
+
+    def _put_into_place(self, indent_len, query, bottom_lines, frame_lines):
+
+        indent = " " * indent_len
+        query_stat = indent + query
+        begining_ind = frame_lines.index(query_stat) + 1
+
+        no = begining_ind
+        for line in bottom_lines:
+            no += 1
+            nline = indent + line
+            frame_lines.insert(no, nline)
+
+        return frame_lines
 
     def _put_in_part(self, indent_len, query, bottom_lines, frame_lines):
 
