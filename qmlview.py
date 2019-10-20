@@ -67,7 +67,6 @@ def put_into_frame():
 
 def put_into_frame():
 
-    print('hre for all')
     chk = Check(sys.argv[1])
     status = chk.check_for_parent()
     frm = PhoneFrame(sys.argv[1])

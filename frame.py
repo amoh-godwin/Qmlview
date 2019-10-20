@@ -124,7 +124,6 @@ class PhoneFrame():
 
             final_body += line + '\r\n'
 
-        print(final_body)
         return final_body
 
     def unparentised_handling(self):
@@ -227,7 +226,7 @@ class PhoneFrame():
                 if bracks == 1:
                     lines[ind] = '***'
                 else:
-                    print('')
+                    pass
 
         cc = [c for c in lines if c != '***']
         return cc
@@ -259,7 +258,7 @@ class PhoneFrame():
                     found.append(line)
                     lines[ind] = '***'
                 else:
-                    print('')
+                    pass
 
         lines = [d for d in lines if d != '***']
         return found, lines
