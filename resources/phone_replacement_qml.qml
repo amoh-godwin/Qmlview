@@ -10,6 +10,7 @@ ApplicationWindow {
     title: qsTr("Window")
     color: "transparent"
     flags: Qt.Window | Qt.FramelessWindowHint
+    objectName: "MainWindowItem"
 
     background: Rectangle {
         id: bg
