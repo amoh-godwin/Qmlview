@@ -220,7 +220,7 @@ class PhoneFrame():
             ind += 1
             if query in line:
                 bracks += 1
-                found.append(line)
+                found.append(line.replace(query, ''))
                 lines[ind] = '***'
                 continue
             elif '{' in line and bracks > 0:
