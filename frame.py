@@ -50,8 +50,13 @@ class PhoneFrame():
         for o_imp_s in orig_imp_stats:
             ss = o_imp_s.split(' ')
             ss_w = ss[1]
-            ss_num = ss[2].replace('.', '')
-            orig_imp_s[ss_w] = int(ss_num)
+            # if import is an imported folder
+            # it does not contain a number
+            if '"' in ss_w or "'" in ss_w:
+                orig_imp_s[ss_w] = 1
+            else:
+                ss_num = ss[2].replace('.', '')
+                orig_imp_s[ss_w] = int(ss_num)
 
         # Finally compare and insert or remove lower import version
         no = 0
@@ -157,8 +162,13 @@ class PhoneFrame():
         for o_imp_s in orig_imp_stats:
             ss = o_imp_s.split(' ')
             ss_w = ss[1]
-            ss_num = ss[2].replace('.', '')
-            orig_imp_s[ss_w] = int(ss_num)
+            # if import is an imported folder
+            # it does not contain a number
+            if '"' in ss_w or "'" in ss_w:
+                orig_imp_s[ss_w] = 1
+            else:
+                ss_num = ss[2].replace('.', '')
+                orig_imp_s[ss_w] = int(ss_num)
 
         # Finally compare and insert or remove lower import version
         no = 0
