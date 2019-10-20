@@ -73,8 +73,6 @@ class PhoneFrame():
 
         # Pick all properties and comps in ApplicationWindow
         prop_lines, orig_bottom_lines = self._pick_parent_props(orig_bottom_lines)
-        print('prop: ', prop_lines)
-        print('lines: ', orig_bottom_lines)
 
         menubar_lines, orig_bottom_lines = self._find_part('menuBar:',
                                                           orig_bottom_lines)
@@ -90,6 +88,11 @@ class PhoneFrame():
         content_lines = orig_bottom_lines
 
         ### Start the insertion
+        # properties
+        n_frame_lines = self._put_into_place(4,
+                                          'objectName: "MainWindowItem"',
+                                          prop_lines,
+                                          n_frame_lines)
         # menubar
         n_frame_lines = self._put_into_place(16,
                                           'objectName: "menuBarContainerItem"',
