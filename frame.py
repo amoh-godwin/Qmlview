@@ -201,6 +201,10 @@ class PhoneFrame():
                     bracks -= 1
             elif 'Component' in line:
                 continue
+            elif 'property' in line:
+                continue
+            elif 'signal' in line:
+                continue
             else:
                 if bracks == 1:
                     lines[ind] = '***'

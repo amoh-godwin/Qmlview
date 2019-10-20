@@ -9,6 +9,14 @@ ApplicationWindow {
 
     Component.onCompleted: {console.log('love')}
 
+    property string the_love: "JESUS"
+
+    signal this_is_it()
+
+    onThis_is_it: {
+        console.log('dance')
+    }
+
     menuBar: Rectangle {
         width: 400
         height: 48
