@@ -2,11 +2,25 @@ import re
 from PyQt5.QtCore import QFile, QIODevice, QResource
 QResource.registerResource("resource.rcc")
 
-class CheckStyle():
+class Check():
 
 
     def __init__(self, filename):
         self.filename = filename
+        self.search_keywords = ("ApplicationWindow" or "Window")
+
+    def check_for_parent(self):
+
+        # find parent
+        with open(self.filename, 'r') as orig_file:
+            lines = orig_file.readlines()
+            checked = [n.split(" ", 1)[0] for n in lines if n != "\n"]
+
+        # find if it has a window parent
+        if self.search_keywords in checked:
+            return True
+        else:
+            return False
 
     def check_style(self):
 
@@ -29,31 +43,7 @@ class FixQml():
     def __init__(self, filename):
         self.original_file = filename
         self.replacement_qml = ":/qml/replacement_qml.qml"
-        self.search_keywords = ("ApplicationWindow" or "Window")
         self.found_entry = ""
-
-
-    def handle(self):
-
-        # does the main
-        if self.check_for_parent():
-            return True, "0"
-        else:
-            data = self.put_in_parent()
-            return False, data
-
-    def check_for_parent(self):
-
-        # find parent
-        with open(self.original_file, 'r') as orig_file:
-            lines = orig_file.readlines()
-            checked = [n.split(" ", 1)[0] for n in lines if n != "\n"]
-
-        # find if it has a window parent
-        if self.search_keywords in checked:
-            return True
-        else:
-            return False
 
     def put_in_parent(self):
 
@@ -63,10 +53,12 @@ class FixQml():
         
         # Put in the Controls import statement if not in there
         # remove the last space before the version nos.
-        checked = [n.split(" ", 2)[1] for n in lines \
+
+        # find the lines that start with import and split to get the stats only
+        imp_stats = [n.split(" ", 2)[1] for n in lines \
                    if n.startswith('import') and n != "\n"]
 
-        if "QtQuick.Controls" in checked:
+        if "QtQuick.Controls" in imp_stats:
             pass
         else:
             lines.insert(1, 'import QtQuick.Controls 2.0\n')
