@@ -112,7 +112,6 @@ class PhoneFrame():
             final_body += line + '\r\n'
 
         print(final_body)
-        return
         return final_body
 
     def unparentised_handling(self):
