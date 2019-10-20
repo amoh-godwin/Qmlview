@@ -4,19 +4,20 @@ import QtQuick.Controls 2.3
 ApplicationWindow {
     visible: true
     width: 400
-    height: 400
+    height: 640
+    color: "black"
 
     Component.onCompleted: {console.log('love')}
 
     menuBar: Rectangle {
         width: 400
-        height: 200
+        height: 48
         color: "dodgerblue"
     }
 
     header: Rectangle {
         width: 400
-        height: 200
+        height: 48
         color: "dodgerblue"
     }
 
@@ -29,7 +30,7 @@ ApplicationWindow {
 
     footer: Rectangle {
         width: 400
-        height: 200
+        height: 48
         color: "dodgerblue"
     }
 

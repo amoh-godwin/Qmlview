@@ -8,7 +8,7 @@ ApplicationWindow {
     width: 360
     height: 640
     title: qsTr("Window")
-    color: "black"
+    color: "transparent"
     flags: Qt.Window | Qt.FramelessWindowHint
 
     background: Rectangle {
@@ -35,6 +35,7 @@ ApplicationWindow {
 
         ColumnLayout {
             anchors.fill: parent
+            clip: true
             spacing: 0
 
             Rectangle {// menubar
@@ -64,10 +65,9 @@ ApplicationWindow {
             Rectangle {// contentItem
                 id: _hidd_co_nt_entItem
                 Layout.fillWidth: true
-                Layout.maximumWidth: ff__.width
                 Layout.fillHeight: true
-                Layout.maximumHeight: ff__.height
                 visible: (children.length > 0)
+                color: "black"
                 clip: true
                 objectName: "ContentItem"
 
