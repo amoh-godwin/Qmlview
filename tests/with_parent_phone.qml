@@ -7,7 +7,7 @@ ApplicationWindow {
     height: 640
     color: "black"
 
-    Component.onCompleted: {console.log('love')}
+    Component.onCompleted: { console.log('love')}
 
     property string the_love: "JESUS"
 

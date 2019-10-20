@@ -71,6 +71,11 @@ class PhoneFrame():
         orig_bottom_lines = self._del_parts(
                 'ApplicationWindow {', orig_bottom_lines)
 
+        # Pick all properties and comps in ApplicationWindow
+        prop_lines, orig_bottom_lines = self._pick_parent_props(orig_bottom_lines)
+        print('prop: ', prop_lines)
+        print('lines: ', orig_bottom_lines)
+
         menubar_lines, orig_bottom_lines = self._find_part('menuBar:',
                                                           orig_bottom_lines)
 
@@ -244,6 +249,53 @@ class PhoneFrame():
                     print('')
 
         lines = [d for d in lines if d != '***']
+        return found, lines
+
+    def _pick_parent_props(self, lines):
+
+        """
+            Pick all components found in ApplicationWindow
+            i.e:
+                property
+                signal
+                onSignal
+                Component functions
+        """
+
+        found = []
+        go = False
+        cont = False
+        ind = -1
+        for line in lines:
+            ind += 1
+            if 'Component' in line:
+                if '}' in line:
+                    continue
+                else:
+                    cont = True
+                    continue
+            elif 'on' in line and ':' in line:
+                go = True
+                found.append(line)
+                lines[ind] = "****"
+            elif '}' in line:
+                if cont:
+                    cont = False
+                    continue
+                elif go:
+                    found.append(line)
+                    lines[ind] = '****'
+                    go = False
+            elif '{' in line:
+                break
+            else:
+                if cont:
+                    continue
+                else:
+                    found.append(line)
+                    lines[ind] = '****'
+
+        lines = [n for n in lines if n != '****']
         return found, lines
 
     def _put_into_place(self, indent_len, query, bottom_lines, frame_lines):
