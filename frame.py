@@ -83,12 +83,27 @@ class PhoneFrame():
         # Accept the remaining as content Lines
         # Todo properties and signal handlers should be handled as well
         content_lines = orig_bottom_lines
-        return
 
-        # Start the search for the contentItem where we'll insert the users qml
-        n_frame_lines = self._put_in_part(16,
+        ### Start the insertion
+        # menubar
+        n_frame_lines = self._put_into_place(16,
+                                          'objectName: "menuBarContainerItem"',
+                                          menubar_lines,
+                                          n_frame_lines)
+        # header
+        n_frame_lines = self._put_into_place(16,
+                                          'objectName: "headerItem"',
+                                          header_lines,
+                                          n_frame_lines)
+        # footer
+        n_frame_lines = self._put_into_place(16,
+                                          'objectName: "footerItem"',
+                                          footer_lines,
+                                          n_frame_lines)
+        # contentItem ( Remaining content)
+        n_frame_lines = self._put_into_place(16,
                                           'objectName: "ContentItem"',
-                                          orig_bottom_lines,
+                                          content_lines,
                                           n_frame_lines)
 
         final_body = ""
@@ -96,6 +111,8 @@ class PhoneFrame():
 
             final_body += line + '\r\n'
 
+        print(final_body)
+        return
         return final_body
 
     def unparentised_handling(self):
