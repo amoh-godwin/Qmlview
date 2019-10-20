@@ -8,7 +8,26 @@ ApplicationWindow {
 
     Component.onCompleted: {console.log('love')}
 
+    menuBar: Rectangle {
+        width: 400
+        height: 200
+        color: "dodgerblue"
+    }
+
     header: Rectangle {
+        width: 400
+        height: 200
+        color: "dodgerblue"
+    }
+
+
+    Rectangle {
+        width: 400
+        height: 400
+        color: "gold"
+    }
+
+    footer: Rectangle {
         width: 400
         height: 200
         color: "dodgerblue"

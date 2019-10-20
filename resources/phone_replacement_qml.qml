@@ -11,10 +11,6 @@ ApplicationWindow {
     color: "black"
     flags: Qt.Window | Qt.FramelessWindowHint
 
-    Component.onCompleted: {
-        bg.width = width + 24
-    }
-
     background: Rectangle {
         id: bg
         anchors.fill: parent
@@ -47,6 +43,9 @@ ApplicationWindow {
                 Layout.preferredHeight: (children.length > 0) ? children[0].height : 48
                 visible: (children.length > 0)
                 color: "black"
+                clip: true
+                objectName: "menuBarContainerItem"
+
 
             }
 
@@ -55,6 +54,11 @@ ApplicationWindow {
                 Layout.fillWidth: true
                 Layout.preferredHeight: (children.length > 0) ? children[0].height : 48
                 visible: (children.length > 0)
+                color: "black"
+                clip: true
+                objectName: "headerItem"
+
+
             }
 
             Rectangle {// contentItem
@@ -75,6 +79,11 @@ ApplicationWindow {
                 Layout.fillWidth: true
                 Layout.preferredHeight: (children.length > 0) ? children[0].height : 48
                 visible: (children.length > 0)
+                clip: true
+                color: "black"
+                objectName: "footerItem"
+
+
             }
 
         }
