@@ -31,8 +31,8 @@ ApplicationWindow {
 
 
     Rectangle {
-        width: 400
-        height: 400
+        width: parent.width
+        height: parent.height
         color: "gold"
     }
 
