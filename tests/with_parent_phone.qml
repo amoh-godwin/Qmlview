@@ -29,13 +29,6 @@ ApplicationWindow {
         color: "dodgerblue"
     }
 
-
-    Rectangle {
-        width: parent.width
-        height: parent.height
-        color: "gold"
-    }
-
     footer: Rectangle {
         width: 400
         height: 48
