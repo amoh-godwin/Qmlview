@@ -277,6 +277,7 @@ class PhoneFrame():
 
         found = []
         go = False
+        keep_going = False
         cont = False
         ind = -1
         for line in lines:
@@ -291,6 +292,20 @@ class PhoneFrame():
                 go = True
                 found.append(line)
                 lines[ind] = "****"
+            elif '{' in line and '(' in line:
+                # this is a statement inside an a signal handler
+                keep_going = True
+                found.append(line)
+                lines[ind] = '***'
+            elif '}' in line and '{' in line and keep_going:
+                # an else statement in a signal handler
+                found.append(line)
+                lines[ind] = '****'
+            elif '}' in line and keep_going:
+                # This is probably an end statement in the stat in handler
+                found.append(line)
+                lines[ind] = '****'
+                keep_going = False
             elif '}' in line:
                 if cont:
                     cont = False
