@@ -39,10 +39,12 @@ def fix_qml():
     status = chk.check_for_parent()
 
     if status:
+        engine.quit.connect(app.quit)
         engine.load(sys.argv[1])
     else:
         ret_data = fix.put_in_parent()
         url = _construct_Qurl(sys.argv[1])
+        engine.quit.connect(app.quit)
         engine.loadData(bytes(ret_data, 'utf-8'), url)
 
     # check for qml loading errors and exit the app
@@ -77,8 +79,8 @@ def put_into_frame():
         ret_data = frm.unparentised_handling()
 
     url = _construct_Qurl(sys.argv[1])
+    engine.quit.connect(app.quit)
     engine.loadData(bytes(ret_data, 'utf-8'), url)
-
 
 def run():
     # run the for engine
@@ -93,6 +95,7 @@ def run_in_frame():
 
     put_into_frame()
 
+
 if len(sys.argv) > 1:
     # check if it comes with parameters
     if len(sys.argv) > 2 and sys.argv[2] == '--phone':
@@ -101,6 +104,7 @@ if len(sys.argv) > 1:
     else:
         # it has no other parameter
         run()
+
 else:
     print('Usage: qmlview file or ./qmlview file')
     sys.exit(2)
