@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 setup(
     name="Qmlview",
-    version="0.3-beta",
+    version="1.0",
     packages=find_packages(),
     install_requires=['PyQt5 >= 5.10'],
     entry_points={
@@ -12,16 +12,16 @@ setup(
     author_email="amohgyebigodwin@gmail.com",
     description="An alternative to qmlscene",
     keywords="qmlscene, ninja-preview, qml, pyqt, pyqt5, pyside, pyside2",
-    url="http://example.com/HelloWorld/",   # project home page, if any
+    url="https://github.com/amoh-godwin/Qmlview",   # project home page, if any
     project_urls={
-        "Bug Tracker": "https://bugs.example.com/HelloWorld/",
-        "Documentation": "https://docs.example.com/HelloWorld/",
-        "Source Code": "https://code.example.com/HelloWorld/",
+        "Bug Tracker": "https://github.com/amoh-godwin/Qmlview/issues",
+        "Documentation": "https://github.com/amoh-godwin/Qmlview/wiki",
+        "Source Code": "https://github.com/amoh-godwin/Qmlview",
     },
     classifiers = [
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Development Status :: 4 - Beta",
+        "Development Status :: 5 - Production/Stable",
         "Environment :: Other Environment",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: GNU Library or Lesser General Public License (LGPL)",
