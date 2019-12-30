@@ -14,6 +14,8 @@ class PhoneFrame():
 
         self.original_file = filename
         self.frame_qml = ":/qml/phone_replacement_qml.qml"
+        self.wind_user_props = {'title': 'title: qsTr("Qmlview")',
+                                    'color': 'color: "white"'}
 
     def parentised_handling(self):
 
@@ -88,9 +90,20 @@ class PhoneFrame():
         footer_lines, orig_bottom_lines = self._find_part('footer:',
                                                           orig_bottom_lines)
 
+        # Add user's defined Window props to contentItem
+        # e.g. color
+        orig_bottom_lines = self._change_content('title: "{MainWindowItem}"',
+                                                 self.wind_user_props['title'],
+                                                 orig_bottom_lines)
+
+        orig_bottom_lines = self._change_content('color: "{ContentItem}"',
+                                                 self.wind_user_props['color'],
+                                                 orig_bottom_lines)
+
         # Accept the remaining as content Lines
         # Todo properties and signal handlers should be handled as well
         content_lines = orig_bottom_lines
+        
 
         ### Start the insertion
         # properties
@@ -281,7 +294,11 @@ class PhoneFrame():
         ind = -1
         for line in lines:
             ind += 1
-            if 'Component' in line:
+            if 'title:' in line:
+                self.wind_user_props['title'] = line
+            elif 'color:' in line:
+                self.wind_user_props['color'] = line
+            elif 'Component' in line:
                 if '}' in line:
                     continue
                 else:
@@ -324,6 +341,12 @@ class PhoneFrame():
 
         lines = [n for n in lines if n != '****']
         return found, lines
+
+    def _change_content(self, query, repl, lines):
+        ind = lines.index(query)
+        lines.remove(query)
+        lines.insert(ind, repl)
+        return lines
 
     def _put_into_place(self, indent_len, query, bottom_lines, frame_lines):
 
