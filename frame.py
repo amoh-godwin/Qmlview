@@ -92,15 +92,18 @@ class PhoneFrame():
 
         # Add user's defined Window props to contentItem
         # e.g. color
-        orig_bottom_lines = self._change_content(4,
-                                                 'title: "{MainWindowItem}"',
-                                                 self.wind_user_props['title'],
-                                                 orig_bottom_lines)
+        n_frame_lines = self._change_content(4,
+                                             'title: "{MainWindowItem}"',
+                                             self.wind_user_props['title'],
+                                             n_frame_lines)
 
-        orig_bottom_lines = self._change_content(16,
-                                                 'color: "{ContentItem}"',
-                                                 self.wind_user_props['color'],
-                                                 orig_bottom_lines)
+
+        n_frame_lines = self._change_content(16,
+                                             'color: "{ContentItem}"',
+                                             self.wind_user_props['color'],
+                                             n_frame_lines)
+
+
 
         # Accept the remaining as content Lines
         # Todo properties and signal handlers should be handled as well
@@ -134,12 +137,17 @@ class PhoneFrame():
                                           content_lines,
                                           n_frame_lines)
 
-        final_body = ""
-        for line in n_frame_lines:
-
-            final_body += line + '\r\n'
+        final_body = self._recompose(n_frame_lines)
 
         return final_body
+
+    def _recompose(self, lines):
+        string = ""
+        for line in lines:
+
+            string += line + '\r\n'
+
+        return string
 
     def unparentised_handling(self):
 
@@ -239,6 +247,13 @@ class PhoneFrame():
                 continue
             else:
                 if bracks == 1:
+                    # save the title and color
+                    # then delete them
+                    if 'title' in line:
+                        self.wind_user_props['title'] = line
+                    elif 'color' in line:
+                        self.wind_user_props['color'] = line
+
                     lines[ind] = '***'
                 else:
                     pass
@@ -296,11 +311,7 @@ class PhoneFrame():
         ind = -1
         for line in lines:
             ind += 1
-            if 'title:' in line:
-                self.wind_user_props['title'] = line
-            elif 'color:' in line:
-                self.wind_user_props['color'] = line
-            elif 'Component' in line:
+            if 'Component' in line:
                 if '}' in line:
                     continue
                 else:
@@ -347,10 +358,10 @@ class PhoneFrame():
     def _change_content(self, indent_len, query, repl, lines, prev_indent=4):
         indent = " " * indent_len
         new_indent = " " * (indent_len - prev_indent)
-        ind = lines.index(indent + query)
+        query = indent + query
+        ind = lines.index(query)
         lines.remove(query)
         lines.insert(ind, new_indent + repl)
-        print('handsome: ', lines)
         return lines
 
     def _put_into_place(self, indent_len, query, bottom_lines, frame_lines):

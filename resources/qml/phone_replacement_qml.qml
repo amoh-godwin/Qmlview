@@ -1,7 +1,7 @@
 import QtQuick 2.10
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
-import "qrc:///UI/others" as Other
+import "qrc:///qml/others" as Other
 
 ApplicationWindow {
     id: main__window
@@ -64,7 +64,7 @@ ApplicationWindow {
         }
     }
 
-    FontLoader { id: __main__font__; source: "qrc:///UI/fonts/materialdesignicons/materialdesignicons-webfont.ttf" }
+    FontLoader { id: __main__font__; source: "qrc:///fonts/materialdesignicons/materialdesignicons-webfont.ttf" }
 
     background: Rectangle {
         id: __back__ground__
@@ -135,7 +135,7 @@ ApplicationWindow {
                 Image {
                     width: parent.width
                     height: parent.height
-                    source: "qrc:///images/ipad.png"
+                    source: "qrc:///images/Ipad.png"
                 }
 
                 Rectangle {
