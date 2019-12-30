@@ -92,11 +92,13 @@ class PhoneFrame():
 
         # Add user's defined Window props to contentItem
         # e.g. color
-        orig_bottom_lines = self._change_content('title: "{MainWindowItem}"',
+        orig_bottom_lines = self._change_content(4,
+                                                 'title: "{MainWindowItem}"',
                                                  self.wind_user_props['title'],
                                                  orig_bottom_lines)
 
-        orig_bottom_lines = self._change_content('color: "{ContentItem}"',
+        orig_bottom_lines = self._change_content(16,
+                                                 'color: "{ContentItem}"',
                                                  self.wind_user_props['color'],
                                                  orig_bottom_lines)
 
@@ -342,10 +344,13 @@ class PhoneFrame():
         lines = [n for n in lines if n != '****']
         return found, lines
 
-    def _change_content(self, query, repl, lines):
-        ind = lines.index(query)
+    def _change_content(self, indent_len, query, repl, lines, prev_indent=4):
+        indent = " " * indent_len
+        new_indent = " " * (indent_len - prev_indent)
+        ind = lines.index(indent + query)
         lines.remove(query)
-        lines.insert(ind, repl)
+        lines.insert(ind, new_indent + repl)
+        print('handsome: ', lines)
         return lines
 
     def _put_into_place(self, indent_len, query, bottom_lines, frame_lines):
