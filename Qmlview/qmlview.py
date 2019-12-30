@@ -102,14 +102,14 @@ def main_run():
 if len(sys.argv) > 1:
     # check if it comes with parameters
     if len(sys.argv) > 2:
-        
+        print('erhe')
         if sys.argv[2] in ('-phone', '--phone'):
             # has a parameter
-            print('sure')
             run_in_frame()
         else:
             print('Usage: qmlview [file] [-phone, --phone]')
             print('qmlview error: invalid parameter')
+            sys.exit(2)
     else:
         # it has no other parameter
         run()
