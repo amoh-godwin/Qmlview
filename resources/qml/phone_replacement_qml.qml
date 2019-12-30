@@ -8,7 +8,7 @@ ApplicationWindow {
     visible: true
     width: 468
     height: 736
-    title: qsTr("Window")
+    title: "{MainWindowItem}"
     color: "transparent"
     flags: Qt.Window | Qt.FramelessWindowHint
     objectName: "MainWindowItem"
@@ -259,7 +259,7 @@ ApplicationWindow {
                 id: _hidd_co_nt_entItem
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                color: "transparent"
+                color: "{ContentItem}"
                 clip: true
                 objectName: "ContentItem"
 
