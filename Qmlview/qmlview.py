@@ -102,7 +102,6 @@ def main_run():
 if len(sys.argv) > 1:
     # check if it comes with parameters
     if len(sys.argv) > 2:
-        print('erhe')
         if sys.argv[2] in ('-phone', '--phone'):
             # has a parameter
             run_in_frame()

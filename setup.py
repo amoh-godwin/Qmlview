@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 setup(
     name="Qmlview",
-    version="1.0",
+    version="1.1",
     packages=find_packages(),
     install_requires=['PyQt5 >= 5.10'],
     entry_points={
@@ -11,7 +11,7 @@ setup(
     author="Amoh - Gyebi Godwin Ampofo Michael",
     author_email="amohgyebigodwin@gmail.com",
     description="An alternative to qmlscene",
-    keywords="qmlscene, ninja-preview, qml, pyqt, pyqt5, pyside, pyside2",
+    keywords="qmlview, qmlscene, ninja-preview, qml, pyqt, pyqt5, pyside, pyside2",
     url="https://github.com/amoh-godwin/Qmlview",   # project home page, if any
     project_urls={
         "Bug Tracker": "https://github.com/amoh-godwin/Qmlview/issues",
