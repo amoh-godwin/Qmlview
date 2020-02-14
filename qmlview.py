@@ -5,10 +5,10 @@ from base64 import b64decode
 from PyQt5.QtCore import QUrl, QResource
 from PyQt5.QtGui import QGuiApplication, QIcon
 from PyQt5.QtQml import QQmlApplicationEngine
-from Qmlview.func import FixQml, Check
-from Qmlview.frame import PhoneFrame
+from func import FixQml, Check
+from frame import PhoneFrame
 
-from Qmlview._qmlview_resource_ import rcc
+from _qmlview_resource_ import rcc
 
 rcc_data = b64decode(rcc)
 
@@ -104,7 +104,8 @@ if len(sys.argv) > 1:
     if len(sys.argv) > 2:
         if sys.argv[2] in ('-phone', '--phone'):
             # has a parameter
-            run_in_frame()
+            print('parpar')
+            #run_in_frame()
         else:
             print('Usage: qmlview [file] [-phone, --phone]')
             print('qmlview error: invalid parameter')
