@@ -17,6 +17,9 @@ with open('_qmlview_resource_.rcc', 'wb') as rcc_b:
 
 QResource.registerResource("_qmlview_resource_.rcc")
 
+ERROR_CODES = {1: 'Qml rootObject not created', 2: 'File Not Found',
+               3: 'Invalid parameter'}
+
 PATH_EG = os.path.join(os.environ['USERPROFILE'], 'main.qml')
 
 def cleanUp():
@@ -32,8 +35,6 @@ def chk_style():
     # check if it contains styling
     chk = Check(sys.argv[1])
     style_name = chk.check_style()
-
-    #os.environ['QT_QUICK_CONTROLS_STYLE'] = style_name
 
     if style_name:
         os.environ['QT_QUICK_CONTROLS_STYLE'] = style_name
@@ -58,6 +59,11 @@ def fix_qml():
         engine.load(sys.argv[1])
     else:
         ret_data = fix.put_in_parent()
+        
+        print('****************')
+        print(ret_data)
+        print('****************')
+        
         url = _construct_Qurl(sys.argv[1])
         engine.quit.connect(app.quit)
         engine.loadData(bytes(ret_data, 'utf-8'), url)
@@ -110,20 +116,18 @@ if len(sys.argv) > 1:
         print('qmlview error: File Not Found [{0}]'.format(sys.argv[1]))
         print('Please write Filepath in full.')
         print('    Eg:', PATH_EG)
-        sys.exit(1)
-    
-    
+        sys.exit(2)
+
     # check if it comes with parameters
 
     if len(sys.argv) > 2:
         if sys.argv[2] in ('-phone', '--phone'):
             # has a parameter
-            print('parpar')
-            #run_in_frame()
+            run_in_frame()
         else:
             print('Usage: qmlview [file] [-phone, --phone]')
             print('qmlview error: invalid parameter')
-            sys.exit(2)
+            sys.exit(3)
     else:
         # it has no other parameter
         run()
