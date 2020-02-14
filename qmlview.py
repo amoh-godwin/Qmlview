@@ -59,11 +59,6 @@ def fix_qml():
         engine.load(sys.argv[1])
     else:
         ret_data = fix.put_in_parent()
-        
-        print('****************')
-        print(ret_data)
-        print('****************')
-        
         url = _construct_Qurl(sys.argv[1])
         engine.quit.connect(app.quit)
         engine.loadData(bytes(ret_data, 'utf-8'), url)
@@ -84,6 +79,15 @@ def put_into_frame():
         ret_data = frm.parentised_handling()
     else:
         ret_data = frm.unparentised_handling()
+
+    ## Debugging block   
+    print('****************')
+    no = 0
+    for line in ret_data.splitlines():
+        no += 1
+        print(no, line)
+    print('****************')
+    ## End of debuggin block
 
     url = _construct_Qurl(sys.argv[1])
     engine.quit.connect(app.quit)

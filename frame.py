@@ -206,6 +206,18 @@ class PhoneFrame():
         n_frame_lines = frame_imps
         n_frame_lines.extend(frame_body)
 
+        n_frame_lines = self._change_content(4,
+                                             'title: "{MainWindowItem}"',
+                                             self.wind_user_props['title'],
+                                             n_frame_lines,
+                                             0)
+
+        n_frame_lines = self._change_content(16,
+                                             'color: "{ContentItem}"',
+                                             self.wind_user_props['color'],
+                                             n_frame_lines,
+                                             0)
+
         # Start the search for the contentItem where we'll insert the users qml
         n_frame_lines = self._put_in_part(16,
                                           'objectName: "ContentItem"',
