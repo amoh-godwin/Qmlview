@@ -1,3 +1,4 @@
+import os
 import re
 from PyQt5.QtCore import QFile, QIODevice, QResource
 QResource.registerResource("_qmlview_resource_.rcc")
@@ -10,7 +11,7 @@ class Check():
         self.search_keywords = ("ApplicationWindow" or "Window")
 
     def check_for_parent(self):
-
+        
         # find parent
         with open(self.filename, 'r') as orig_file:
             lines = orig_file.readlines()
@@ -23,7 +24,7 @@ class Check():
             return False
 
     def check_style(self):
-
+        
         with open(self.filename, 'r') as o_file:
             data = o_file.read(1024)
             info = re.findall('\n\s*import QtQuick.Controls.[A-Za-z]+ ', data)

@@ -17,6 +17,8 @@ with open('_qmlview_resource_.rcc', 'wb') as rcc_b:
 
 QResource.registerResource("_qmlview_resource_.rcc")
 
+PATH_EG = os.path.join(os.environ['USERPROFILE'], 'main.qml')
+
 def cleanUp():
     pass
 
@@ -100,7 +102,19 @@ def main_run():
         os.remove('_qmlview_resource.rcc')
 
 if len(sys.argv) > 1:
+    
+    # if files exist
+    if os.path.exists(sys.argv[1]):
+        pass
+    else:
+        print('qmlview error: File Not Found [{0}]'.format(sys.argv[1]))
+        print('Please write Filepath in full.')
+        print('    Eg:', PATH_EG)
+        sys.exit(1)
+    
+    
     # check if it comes with parameters
+
     if len(sys.argv) > 2:
         if sys.argv[2] in ('-phone', '--phone'):
             # has a parameter
