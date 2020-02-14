@@ -17,7 +17,12 @@ So, this is supposed to be a stand-alone qmlscene sort of replacement.
 
 # Install
 
-use PIP
+### Standalone
+Standalones are available for download [here](https://github.com/amoh-godwin/Qmlview/releases)
+
+### via PyPI
+You can also download via pypi.org
+If you have python installed you can do: ```pip install Qmlview```
 
 # Usage
 ```qmlview path/to/file```
