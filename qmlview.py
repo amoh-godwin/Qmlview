@@ -2,7 +2,7 @@
 import sys
 import os
 from base64 import b64decode
-from PyQt5.QtCore import QUrl, QResource
+from PyQt5.QtCore import QUrl, QResource, QT_VERSION_STR
 from PyQt5.QtGui import QGuiApplication, QIcon
 from PyQt5.QtQml import QQmlApplicationEngine
 from func import FixQml, Check
@@ -27,19 +27,32 @@ def param_phone():
     run_in_frame()
 
 
+def param_version():
+    print(VERSION)
+    sys.exit(0)
+
+
 def cleanUp():
     pass
 
 
 ERROR_CODES = {1: 'Qml rootObject Could Not Be Created', 2: 'File Not Found',
                3: 'Invalid Parameter'}
-HELP_PARAMS = {'-help': param_help, '--help': param_help,
-              '-h': param_help, '--h': param_help}
+HELP_PARAMS = {
+        '-version': param_version, '--version': param_version,
+        '-v': param_version, '--v': param_version,
+        '-help': param_help, '--help': param_help,
+        '-h': param_help, '--h': param_help}
+VERSION = 'Qt ' +  QT_VERSION_STR
 
-PARAMS = {'-phone': param_phone, '--phone': param_phone,
-              '-p': param_phone, '--p': param_phone,
-              '-help': param_help, '--help': param_help,
-              '-h': param_help, '--h': param_help}
+PARAMS = {
+        '-phone': param_phone, '--phone': param_phone,
+        '-p': param_phone, '--p': param_phone,
+        '-version': param_version, '--version': param_version,
+        '-v': param_version, '--v': param_version,
+        '-help': param_help, '--help': param_help,
+        '-h': param_help, '--h': param_help
+        }
 
 PATH_EG = os.path.join(os.environ['USERPROFILE'], 'main.qml')
 
