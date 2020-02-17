@@ -17,14 +17,31 @@ with open('_qmlview_resource_.rcc', 'wb') as rcc_b:
 
 QResource.registerResource("_qmlview_resource_.rcc")
 
-ERROR_CODES = {1: 'Qml rootObject not created', 2: 'File Not Found',
-               3: 'Invalid parameter'}
 
-PATH_EG = os.path.join(os.environ['USERPROFILE'], 'main.qml')
+def param_help():
+    print_help()
+    sys.exit(0)
+
+
+def param_phone():
+    run_in_frame()
+
 
 def cleanUp():
     pass
 
+
+ERROR_CODES = {1: 'Qml rootObject Could Not Be Created', 2: 'File Not Found',
+               3: 'Invalid Parameter'}
+HELP_PARAMS = {'-help': param_help, '--help': param_help,
+              '-h': param_help, '--h': param_help}
+
+PARAMS = {'-phone': param_phone, '--phone': param_phone,
+              '-p': param_phone, '--p': param_phone,
+              '-help': param_help, '--help': param_help,
+              '-h': param_help, '--h': param_help}
+
+PATH_EG = os.path.join(os.environ['USERPROFILE'], 'main.qml')
 
 app = QGuiApplication(sys.argv)
 app.setWindowIcon(QIcon(':/icons/logo.png'))
@@ -98,30 +115,55 @@ def run_in_frame():
     put_into_frame()
 
 
+def print_help():
+    print('''
+Usage: qmlview source [Optional PARAMS]
+               source The .qml file to be run. This should be a full path
+          \t      [-phone, --phone, -p, --p] Runs source in phone mode
+          \t      [help, --help, -h, --h] Prints this help screen.
+
+eg:
+    qmlview C:\\path\\to\\main.qml
+                 or 
+    qmlview C:\\path\\to\\main.qml --phone
+Note: Help works even without a source specified.
+''')
+
+
 def main_run():
     if os.path.exists('_qmlview_resource.rcc'):
         os.remove('_qmlview_resource.rcc')
 
 if len(sys.argv) > 1:
     
+    # if help param
+    if sys.argv[1] in HELP_PARAMS:
+        # it is a parameter
+        help_func = HELP_PARAMS[sys.argv[1]]
+        # run that param function
+        help_func()
     # if files exist
-    if os.path.exists(sys.argv[1]):
+    elif os.path.exists(sys.argv[1]):
         pass
     else:
         print('qmlview error: File Not Found [{0}]'.format(sys.argv[1]))
         print('Please write Filepath in full.')
         print('    Eg:', PATH_EG)
+        print('or Do: qmlview -help or --help: for help')
         sys.exit(2)
 
     # check if it comes with parameters
 
     if len(sys.argv) > 2:
-        if sys.argv[2] in ('-phone', '--phone'):
+        
+        if sys.argv[2] in PARAMS:
             # has a parameter
-            run_in_frame()
+            func = PARAMS[sys.argv[2]]
+            # run that param function
+            func()
         else:
-            print('Usage: qmlview [file] [-phone, --phone]')
-            print('qmlview error: invalid parameter')
+            print('qmlview error: Invalid Parameter')
+            print_help()
             sys.exit(3)
     else:
         # it has no other parameter
