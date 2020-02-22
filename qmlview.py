@@ -1,19 +1,11 @@
 # -*- coding: utf-8 -*-
 import sys
 import os
-from base64 import b64decode
 from PyQt5.QtCore import QUrl, QResource, QT_VERSION_STR
 from PyQt5.QtGui import QGuiApplication, QIcon
 from PyQt5.QtQml import QQmlApplicationEngine
 from func import FixQml, Check
 from frame import PhoneFrame
-
-from _qmlview_resource_ import rcc
-
-rcc_data = b64decode(rcc)
-
-with open('_qmlview_resource_.rcc', 'wb') as rcc_b:
-    rcc_b.write(rcc_data)
 
 QResource.registerResource("_qmlview_resource_.rcc")
 
