@@ -12,7 +12,7 @@ QResource.registerResource("_qmlview_resource_.rcc")
 
 def param_help():
     print_help()
-    sys.exit(0)
+    house_keeping(0)
 
 
 def param_phone():
@@ -21,7 +21,7 @@ def param_phone():
 
 def param_version():
     print(VERSION)
-    sys.exit(0)
+    house_keeping(0)
 
 
 def cleanUp():
@@ -89,7 +89,15 @@ def fix_qml():
     if engine.rootObjects():
         pass
     else:
-        sys.exit(1)
+        house_keeping(1)
+
+def house_keeping(exit_code):
+    # delete resource file
+    filename = os.path.join(os.getcwd(), '_qmlview_resource_.rcc')
+    if os.path.exists(filename):
+        os.unlink(filename)
+    # exit
+    sys.exit(exit_code)
 
 def put_into_frame():
 
@@ -108,6 +116,7 @@ def put_into_frame():
 
 def run():
     # run the for engine
+    print('here')
     chk_style()
     # contains the call to the engine
     fix_qml()
@@ -139,6 +148,7 @@ def main_run():
     if os.path.exists('_qmlview_resource.rcc'):
         os.remove('_qmlview_resource.rcc')
 
+print(sys.argv)
 if len(sys.argv) > 1:
     
     # if help param
@@ -155,7 +165,7 @@ if len(sys.argv) > 1:
         print('Please write Filepath in full.')
         print('    Eg:', PATH_EG)
         print('or Do: qmlview -help or --help: for help')
-        sys.exit(2)
+        house_keeping(2)
 
     # check if it comes with parameters
 
@@ -169,13 +179,14 @@ if len(sys.argv) > 1:
         else:
             print('qmlview error: Invalid Parameter')
             print_help()
-            sys.exit(3)
+            house_keeping(3)
     else:
         # it has no other parameter
         run()
 
 else:
     print('Usage: qmlview file or ./qmlview file')
-    sys.exit(2)
+    house_keeping(2)
 
-sys.exit(app.exec_())
+
+house_keeping(app.exec_())
