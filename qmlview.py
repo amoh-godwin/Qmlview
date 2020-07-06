@@ -116,7 +116,6 @@ def put_into_frame():
 
 def run():
     # run the for engine
-    print('here')
     chk_style()
     # contains the call to the engine
     fix_qml()
@@ -148,7 +147,7 @@ def main_run():
     if os.path.exists('_qmlview_resource.rcc'):
         os.remove('_qmlview_resource.rcc')
 
-print(sys.argv)
+
 if len(sys.argv) > 1:
     
     # if help param
