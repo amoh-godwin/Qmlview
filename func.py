@@ -23,6 +23,18 @@ class Check():
         else:
             return False
 
+    def check_for_qtcharts(self):
+        # find parent
+        with open(self.filename, 'r') as orig_file:
+            lines = orig_file.readlines()
+            checked = [n.split(" ")[1] for n in lines if 'import ' in n]
+
+        # find if it has a QtCharts import
+        if "QtCharts" in checked:
+            return True
+        else:
+            return False
+
     def check_style(self):
         
         with open(self.filename, 'r') as o_file:

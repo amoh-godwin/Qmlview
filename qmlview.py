@@ -3,6 +3,7 @@ import sys
 import os
 from PyQt5.QtCore import QUrl, QResource, QT_VERSION_STR
 from PyQt5.QtGui import QGuiApplication, QIcon
+from PyQt5.QtWidgets import QApplication
 from PyQt5.QtQml import QQmlApplicationEngine
 from func import FixQml, Check
 from frame import PhoneFrame
@@ -48,7 +49,21 @@ PARAMS = {
 
 PATH_EG = os.path.join(os.environ['USERPROFILE'], 'main.qml')
 
-app = QGuiApplication(sys.argv)
+"""
+Qt Charts require QApplication.
+And so we use that if the qml code imports QtCharts
+We can create the Qt Application object in an if..else..
+statement but not in a function
+"""
+# Check if it import QtCharts
+chk = Check(sys.argv[1])
+contains_qtchart = chk.check_for_qtcharts()
+# use that to decide what to use
+if contains_qtchart:
+    app = QApplication(sys.argv)
+else:
+    app = QGuiApplication(sys.argv)
+
 app.setWindowIcon(QIcon(':/icons/logo.png'))
 app.aboutToQuit.connect(cleanUp)
 engine = QQmlApplicationEngine()
