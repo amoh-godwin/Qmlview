@@ -1,10 +1,17 @@
 # -*- coding: utf-8 -*-
+"""
+The entry file for qmlview.
+* Contains the call to the QGuiApplication or the QApplication
+* Contains the call to the engine
+"""
 import sys
 import os
+
 from PyQt5.QtCore import QUrl, QResource, QT_VERSION_STR
 from PyQt5.QtGui import QGuiApplication, QIcon
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtQml import QQmlApplicationEngine
+
 from func import FixQml, Check
 from frame import PhoneFrame
 
@@ -12,21 +19,33 @@ QResource.registerResource("_qmlview_resource_.rcc")
 
 
 def param_help():
+    """
+    Parameter for help handler
+    """
     print_help()
     house_keeping(0)
 
 
 def param_phone():
+    """
+    Parameter for phone handler
+    """
     run_in_frame()
 
 
 def param_version():
+    """
+    Parameter for phone handler
+    """
     print(VERSION)
     house_keeping(0)
 
 
-def cleanUp():
-    pass
+def clean_up():
+    """
+    Function to clean up all our letfover files
+    before exiting
+    """
 
 
 ERROR_CODES = {1: 'Qml rootObject Could Not Be Created', 2: 'File Not Found',
@@ -65,11 +84,13 @@ else:
     app = QGuiApplication(sys.argv)
 
 app.setWindowIcon(QIcon(':/icons/logo.png'))
-app.aboutToQuit.connect(cleanUp)
+app.aboutToQuit.connect(clean_up)
 engine = QQmlApplicationEngine()
 
 def chk_style():
-    # check if it contains styling
+    """
+     check if it contains styling
+    """
     chk = Check(sys.argv[1])
     style_name = chk.check_style()
 
@@ -78,6 +99,10 @@ def chk_style():
 
 
 def _construct_Qurl(path):
+    """
+     A helper function to make sure scheme
+     and etc is set for correct QUrl
+    """
     url = QUrl()
     url.setScheme("file")
     raw_path = "/" + os.path.dirname(path) + "/"
@@ -86,7 +111,9 @@ def _construct_Qurl(path):
 
 
 def fix_qml():
-    # fix if it is a component
+    """
+     fix if it is a component
+    """
     fix = FixQml(sys.argv[1])
     chk = Check(sys.argv[1])
     status = chk.check_for_parent()
@@ -107,7 +134,9 @@ def fix_qml():
         house_keeping(1)
 
 def house_keeping(exit_code):
-    # delete resource file
+    """
+    delete resource file
+    """
     filename = os.path.join(os.getcwd(), '_qmlview_resource_.rcc')
     if os.path.exists(filename):
         os.unlink(filename)
@@ -115,6 +144,10 @@ def house_keeping(exit_code):
     sys.exit(exit_code)
 
 def put_into_frame():
+    """
+    This is where we put the qml code
+    into a phone frame.
+    """
 
     chk = Check(sys.argv[1])
     status = chk.check_for_parent()
@@ -130,6 +163,10 @@ def put_into_frame():
     engine.loadData(bytes(ret_data, 'utf-8'), url)
 
 def run():
+    """
+    Does the actually call to the engine,
+    this function is however not for the phone parameter call
+    """
     # run the for engine
     chk_style()
     # contains the call to the engine
@@ -137,6 +174,10 @@ def run():
 
 
 def run_in_frame():
+    """
+    Does the actually call to the engine,
+    this function is however is only for the phone parameter call
+    """
 
     chk_style()
 
@@ -144,6 +185,9 @@ def run_in_frame():
 
 
 def print_help():
+    """
+    Prints the help message to the prompt
+    """
     print('''
 Usage: qmlview source [Optional PARAMS]
                source The .qml file to be run. This should be a full path
@@ -158,13 +202,8 @@ Note: Help works even without a source specified.
 ''')
 
 
-def main_run():
-    if os.path.exists('_qmlview_resource.rcc'):
-        os.remove('_qmlview_resource.rcc')
-
-
 if len(sys.argv) > 1:
-    
+
     # if help param
     if sys.argv[1] in HELP_PARAMS:
         # it is a parameter
@@ -184,7 +223,7 @@ if len(sys.argv) > 1:
     # check if it comes with parameters
 
     if len(sys.argv) > 2:
-        
+
         if sys.argv[2] in PARAMS:
             # has a parameter
             func = PARAMS[sys.argv[2]]
