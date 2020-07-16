@@ -135,11 +135,9 @@ def fix_qml():
 
 def house_keeping(exit_code):
     """
-    delete resource file
+    Delete resource file, removed in the bundled version
+    then makes the call to the system Exit
     """
-    filename = os.path.join(os.getcwd(), '_qmlview_resource_.rcc')
-    if os.path.exists(filename):
-        os.unlink(filename)
     # exit
     sys.exit(exit_code)
 
