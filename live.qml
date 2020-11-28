@@ -9,13 +9,6 @@ ApplicationWindow {
 
     property QtObject __qmlview__live_o_bject
 
-    Button {
-        text: "all"
-
-        onClicked: __qmlview__live_o_bject.caller()
-
-    }
-
 
     Connections {
         target: __qmlview__live_o_bject

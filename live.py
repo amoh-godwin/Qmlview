@@ -19,7 +19,7 @@ class Live(QObject):
 
     def __init__(self):
         QObject.__init__(self)
-        #self.engine = engine
+        self._initialiase()
 
     updated = pyqtSignal(str, arguments=['updater'])
 
@@ -32,8 +32,10 @@ class Live(QObject):
         a_thread.start()
 
     def _auto_reload(self):
-        code = "import QtQuick 2.10; Rectangle {width: 200; height: 400; color: 'gold' }"
-        self.updater(code)
+        while True:
+            code = "import QtQuick 2.10; Rectangle {width: 200; height: 400; color: 'gold' }"
+            self.updater(code)
+            sleep(1)
 
     @pyqtSlot()
     def caller(self):
