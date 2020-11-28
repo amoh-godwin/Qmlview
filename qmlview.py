@@ -138,6 +138,9 @@ def house_keeping(exit_code):
 def live():
     global LIVE_SET
     LIVE_SET = True
+
+    chk_style()
+
     engine.quit.connect(app.quit)
     engine.load('live.qml')
 
