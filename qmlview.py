@@ -14,6 +14,7 @@ from PyQt5.QtQml import QQmlApplicationEngine
 
 from func import FixQml, Check
 from frame import PhoneFrame
+from live import Live
 
 QResource.registerResource("_qmlview_resource_.rcc")
 
@@ -133,7 +134,8 @@ def house_keeping(exit_code):
     sys.exit(exit_code)
 
 def live():
-    pass
+    engine.quit.connect(app.quit)
+    l_ive = Live(engine, sys.argv[1])
 
 def put_into_frame():
     """
