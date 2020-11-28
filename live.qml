@@ -6,6 +6,7 @@ ApplicationWindow {
     visible: true
     width: 500
     height: 400
+    flags: Qt.WindowSystemMenuHint | Qt.Window | Qt.WindowTitleHint | Qt.WindowCloseButtonHint | Qt.WindowMinMaxButtonsHint | Qt.WindowStaysOnTopHint
 
     property QtObject __qmlview__live_o_bject
 
