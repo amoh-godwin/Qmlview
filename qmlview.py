@@ -134,8 +134,10 @@ def house_keeping(exit_code):
     sys.exit(exit_code)
 
 def live():
-    engine.quit.connect(app.quit)
     l_ive = Live(engine, sys.argv[1])
+    engine.quit.connect(app.quit)
+    engine.load('live.qml')
+    engine.rootObjects()[0].setProperty('__qmlview__live_object', l_ive)
 
 def put_into_frame():
     """
