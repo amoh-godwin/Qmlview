@@ -22,6 +22,7 @@ ApplicationWindow {
 
         function onUpdated(code) {
             console.log(code)
+            var qml_obj = Qt.createQmlObject(code, __main_win_dow__, 'livetest.qml')
         }
     }
 
