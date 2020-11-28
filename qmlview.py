@@ -18,6 +18,8 @@ from live import Live
 
 QResource.registerResource("_qmlview_resource_.rcc")
 
+LIVE_SET = False
+
 
 def param_help():
     """
@@ -134,10 +136,10 @@ def house_keeping(exit_code):
     sys.exit(exit_code)
 
 def live():
-    l_ive = Live(engine, sys.argv[1])
+    global LIVE_SET
+    LIVE_SET = True
     engine.quit.connect(app.quit)
     engine.load('live.qml')
-    engine.rootObjects()[0].setProperty('__qmlview__live_object', l_ive)
 
 def put_into_frame():
     """
@@ -254,5 +256,11 @@ else:
     print('Usage: qmlview file or ./qmlview file')
     house_keeping(2)
 
+# if live parameter is used
+if LIVE_SET:
+    l_ive = Live()
+    engine.rootObjects()[0].setProperty('__qmlview__live_o_bject', l_ive)
+else:
+    pass
 
 house_keeping(app.exec_())

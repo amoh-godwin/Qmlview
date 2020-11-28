@@ -2,8 +2,9 @@
 Module for Live Reloading
 """
 import threading
+from time import sleep
 
-from PyQt5.QtCore import QObject, QFile, QResource, QIODevice
+from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, QFile, QResource, QIODevice
 
 
 QResource.registerResource("_qmlview_resource_.rcc")
@@ -16,10 +17,11 @@ class Live(QObject):
     """
 
 
-    def __init__(self, engine, ward):
+    def __init__(self):
         QObject.__init__(self)
-        self.engine = engine
-        self._initialiase()
+        #self.engine = engine
+    
+    updated = pyqtSignal(str, arguments=['updater'])
 
     def _initialiase(self):
         self._call_auto_reload()
@@ -30,4 +32,11 @@ class Live(QObject):
         a_thread.start()
 
     def _auto_reload(self):
-        pass
+        self.updater()
+
+    @pyqtSlot()
+    def caller(self):
+        self._initialiase()
+
+    def updater(self):
+        self.updated.emit('Saladine')
