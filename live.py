@@ -17,8 +17,9 @@ class Live(QObject):
     """
 
 
-    def __init__(self):
+    def __init__(self, watch_file):
         QObject.__init__(self)
+        self.watch_file = watch_file
         self._initialiase()
 
     updated = pyqtSignal(str, arguments=['updater'])
@@ -36,7 +37,14 @@ class Live(QObject):
 
     def _auto_reload(self):
         while True:
-            code = "import QtQuick 2.10; Rectangle {width: 200; height: 400; color: 'gold' }"
+            code = self._read_file(self.watch_file)
             self.updater(code)
             sleep(1)
 
+    def _read_file(self, filename):
+        code = ""
+
+        with open(filename, mode='r') as fh:
+            code = fh.read()
+
+        return code

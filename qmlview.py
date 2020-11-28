@@ -258,7 +258,7 @@ else:
 
 # if live parameter is used
 if LIVE_SET:
-    l_ive = Live()
+    l_ive = Live('./tests/livetest.qml')
     engine.rootObjects()[0].setProperty('__qmlview__live_o_bject', l_ive)
 else:
     pass
