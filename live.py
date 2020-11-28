@@ -37,9 +37,3 @@ class Live(QObject):
             self.updater(code)
             sleep(1)
 
-    @pyqtSlot()
-    def caller(self):
-        self._initialiase()
-
-    def updater(self, code):
-        self.updated.emit(code)
