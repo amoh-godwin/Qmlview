@@ -23,6 +23,9 @@ class Live(QObject):
 
     updated = pyqtSignal(str, arguments=['updater'])
 
+    def updater(self, code):
+        self.updated.emit(code)
+
     def _initialiase(self):
         self._call_auto_reload()
 
