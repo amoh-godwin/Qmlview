@@ -26,6 +26,13 @@ def param_help():
     house_keeping(0)
 
 
+def param_live_reload():
+    """
+    Parameter for Live reloading handler
+    """
+    live()
+
+
 def param_phone():
     """
     Parameter for phone handler
@@ -60,6 +67,8 @@ VERSION = 'Qt ' +  QT_VERSION_STR
 PARAMS = {
         '-phone': param_phone, '--phone': param_phone,
         '-p': param_phone, '--p': param_phone,
+        '-live': param_live_reload, '--live': param_live_reload,
+        '-l': param_live_reload, '--l': param_live_reload,
         '-version': param_version, '--version': param_version,
         '-v': param_version, '--v': param_version,
         '-help': param_help, '--help': param_help,
@@ -122,6 +131,9 @@ def house_keeping(exit_code):
     """
     # exit
     sys.exit(exit_code)
+
+def live():
+    pass
 
 def put_into_frame():
     """
