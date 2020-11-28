@@ -11,4 +11,10 @@ class Live():
     """
     """
 
-    pass
+
+    def __init__(self, engine, ward):
+        self.engine = engine
+        self._start_parent()
+
+    def _start_parent(self):
+        self.engine.load('live.qml')
