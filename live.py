@@ -6,6 +6,7 @@ from time import sleep
 
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, QFile, QResource, QIODevice
 
+from misc import Split
 
 QResource.registerResource("_qmlview_resource_.rcc")
 
@@ -44,7 +45,11 @@ class Live(QObject):
     def _read_file(self, filename):
         code = ""
 
-        with open(filename, mode='r') as fh:
-            code = fh.read()
+        splitter = Split(filename)
+        imps = splitter.orig_imp_stats
+        bottom_code = splitter.orig_bottom_lines
+        imps_text = ''.join(imps)
+        btm_code_text = ''.join(bottom_code)
+        code = imps_text + btm_code_text
 
         return code
