@@ -5,6 +5,9 @@ Created on Fri Oct 18 12:04:47 2019
 @author: Amoh - Gyebi Ampofo
 """
 from PyQt5.QtCore import QFile, QResource, QIODevice
+
+from misc import Split
+
 QResource.registerResource("_qmlview_resource_.rcc")
 
 class PhoneFrame():
@@ -19,8 +22,8 @@ class PhoneFrame():
 
     def parentised_handling(self):
 
-        with open(self.original_file, 'r') as orig_file:
-            orig_lines = orig_file.readlines()
+        splitter = Split(self.original_file)
+        splitter.split()
 
         # Open with QFile
         replace_file = QFile(self.frame_qml)
@@ -31,11 +34,8 @@ class PhoneFrame():
         frame_lines = replace_data.splitlines()
 
         # get import statements so we can add them
-        orig_imp_stats = [n for n in orig_lines if n.startswith('import')]
-        # last index of the import stats for the original files
-        orig_imp_last_ind = orig_lines.index(orig_imp_stats[-1]) + 1
-        orig_bottom_lines = orig_lines[orig_imp_last_ind:]
-        
+        orig_imp_stats = splitter.orig_imp_stats
+
         frame_imps = frame_lines[:3]
         frame_body = frame_lines[3:]
 
@@ -74,21 +74,16 @@ class PhoneFrame():
         n_frame_lines = frame_imps
         n_frame_lines.extend(frame_body)
 
-        # Delete ApplicationWindow
-        orig_bottom_lines = self._del_parts(
-                'ApplicationWindow {', orig_bottom_lines)
-
         # Pick all properties and comps in ApplicationWindow
-        prop_lines, orig_bottom_lines = self._pick_parent_props(orig_bottom_lines)
+        prop_lines = splitter.prop_lines
 
-        menubar_lines, orig_bottom_lines = self._find_part('menuBar:',
-                                                          orig_bottom_lines)
+        menubar_lines = splitter.menubar_lines
 
-        header_lines, orig_bottom_lines = self._find_part('header:',
-                                                          orig_bottom_lines)
+        header_lines = splitter.header_lines
 
-        footer_lines, orig_bottom_lines = self._find_part('footer:',
-                                                          orig_bottom_lines)
+        footer_lines = splitter.footer_lines
+
+        self.wind_user_props = splitter.wind_user_props
 
         # Add user's defined Window props to contentItem
         # e.g. color
@@ -102,13 +97,6 @@ class PhoneFrame():
                                              'color: "{ContentItem}"',
                                              self.wind_user_props['color'],
                                              n_frame_lines)
-
-
-
-        # Accept the remaining as content Lines
-        # Todo properties and signal handlers should be handled as well
-        content_lines = orig_bottom_lines
-        
 
         ### Start the insertion
         # properties
@@ -134,7 +122,7 @@ class PhoneFrame():
         # contentItem ( Remaining content)
         n_frame_lines = self._put_into_place(16,
                                           'objectName: "ContentItem"',
-                                          content_lines,
+                                          splitter.orig_bottom_lines,
                                           n_frame_lines)
 
         final_body = self._recompose(n_frame_lines)
