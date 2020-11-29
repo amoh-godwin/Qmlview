@@ -9,13 +9,14 @@ ApplicationWindow {
     flags: Qt.WindowSystemMenuHint | Qt.Window | Qt.WindowTitleHint | Qt.WindowCloseButtonHint | Qt.WindowMinMaxButtonsHint | Qt.WindowStaysOnTopHint
 
     property QtObject __qmlview__live_o_bject
+    property string filename: ""
 
 
     Connections {
         target: __qmlview__live_o_bject
 
         function onUpdated(code) {
-            var qml_obj = Qt.createQmlObject(code, __main_win_dow__, 'livetest.qml')
+            var qml_obj = Qt.createQmlObject(code, __main_win_dow__, filename)
         }
     }
 

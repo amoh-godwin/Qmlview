@@ -263,6 +263,7 @@ else:
 if LIVE_SET:
     l_ive = Live('./tests/livetest.qml')
     engine.rootObjects()[0].setProperty('__qmlview__live_o_bject', l_ive)
+    engine.rootObjects()[0].setProperty('filename', sys.argv[1])
 else:
     pass
 
