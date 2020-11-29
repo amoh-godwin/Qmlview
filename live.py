@@ -40,7 +40,7 @@ class Live(QObject):
         while True:
             code = self._read_file(self.watch_file)
             self.updater(code)
-            sleep(1)
+            sleep(0.1)
 
     def _read_file(self, filename):
         code = ""
