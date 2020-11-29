@@ -10,6 +10,7 @@ ApplicationWindow {
 
     Rectangle {
         anchors.fill: parent
+        color: "dodgerblue"
 
         Text {
             anchors.centerIn: parent
