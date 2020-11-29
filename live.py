@@ -21,6 +21,9 @@ class Live(QObject):
     def __init__(self, watch_file):
         QObject.__init__(self)
         self.watch_file = watch_file
+
+        self.old_code = ''
+
         self._initialiase()
 
     updated = pyqtSignal(str, arguments=['updater'])
@@ -39,7 +42,9 @@ class Live(QObject):
     def _auto_reload(self):
         while True:
             code = self._read_file(self.watch_file)
-            self.updater(code)
+            if code != self.old_code:
+                self.updater(code)
+                self.old_code = code
             sleep(0.1)
 
     def _read_file(self, filename):
