@@ -4,8 +4,8 @@ import QtQuick.Controls 2.15
 ApplicationWindow {
     id: __main_win_dow__
     visible: true
-    width: 500
-    height: 400
+    width: 480
+    height: 600
     flags: Qt.WindowSystemMenuHint | Qt.Window | Qt.WindowTitleHint | Qt.WindowCloseButtonHint | Qt.WindowMinMaxButtonsHint | Qt.WindowStaysOnTopHint
 
     property QtObject __qmlview__live_o_bject
