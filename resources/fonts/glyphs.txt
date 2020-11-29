@@ -6,3 +6,4 @@ led-on: f032c
 
 FA
 bolt: f0e7
+burn: f46a
