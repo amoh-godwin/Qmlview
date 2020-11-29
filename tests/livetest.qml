@@ -14,7 +14,8 @@ ApplicationWindow {
 
         Text {
             anchors.centerIn: parent
-            text: "Yes"
+            text: "I really wanted this all is good oh for "
+            color: "white"
         }
 
     }
