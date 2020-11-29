@@ -23,7 +23,6 @@ class PhoneFrame():
     def parentised_handling(self):
 
         splitter = Split(self.original_file)
-        splitter.split()
 
         # Open with QFile
         replace_file = QFile(self.frame_qml)

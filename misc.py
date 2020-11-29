@@ -21,6 +21,8 @@ class Split():
         self.header_lines = []
         self.footer_lines = []
 
+        self.split()
+
     def split(self):
         with open(self.filename, 'r') as orig_file:
             self.orig_lines = orig_file.readlines()
