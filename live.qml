@@ -14,10 +14,11 @@ ApplicationWindow {
     property string filename: ""
 
 
-    FontLoader { id: __main__font__; source: "file:///H:/GitHub/Qmlview/resources/fonts/fa.otf"}
+    FontLoader { id: __main__live_font__; source: "./resources/fonts/fa.otf"}
 
 
     ApplicationWindow {
+        id: __main_pop_up__window__
         visible: true
         width: 128
         height: 32
@@ -26,20 +27,30 @@ ApplicationWindow {
         flags: Qt.Popup | Qt.WindowSystemMenuHint
         color: "white"
 
+        property bool showProps: false
+
         RowLayout {
             anchors.fill: parent
 
-            Other.CustomButton {
-                text: "\uf850"
+            Other.CustomLiveButton {
+                text: "\uf46a"
+                enabled: false
             }
 
-            Other.CustomButton {
-                text: "\uf84c"
+            Other.CustomLiveButton {
+                text: __main_pop_up__window__.showProps ? "\uf850" : "\uf84c"
+
+                onClicked: {
+                    var show = __main_pop_up__window__.showProps
+                    __main_pop_up__window__.showProps = !show
+                }
             }
 
         }
 
     }
+
+
 
 
     Connections {
