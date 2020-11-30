@@ -35,10 +35,18 @@ class Live(QObject):
     propsUpdated = pyqtSignal(list, str, arguments=['props_updater'])
 
     def props_updater(self, props, code):
-        self.propsUpdated.emit(props, code)
+        try:
+            self.propsUpdated.emit(props, code)
+        except RuntimeError:
+            # possibly user exited out
+            pass
 
     def updater(self, code):
-        self.updated.emit(code)
+        try:
+            self.updated.emit(code)
+        except RuntimeError:
+            # possibly user exited out
+            pass
 
     @pyqtProperty(list)
     def oldProps(self):
