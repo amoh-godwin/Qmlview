@@ -268,7 +268,7 @@ else:
 
 # if live parameter is used
 if LIVE_SET:
-    live_obj = Live('./tests/livetest.qml')
+    live_obj = Live(sys.argv[1])
     engine.rootObjects()[0].setProperty('__qmlview__live_o_bject', live_obj)
     engine.rootObjects()[0].setProperty('filename', sys.argv[1])
 else:
