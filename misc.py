@@ -159,7 +159,7 @@ class Split():
                 # this is a statement inside an a signal handler
                 keep_going = True
                 found.append(line)
-                lines[ind] = '***'
+                lines[ind] = '****'
             elif '}' in line and '{' in line and keep_going:
                 # an else statement in a signal handler
                 found.append(line)
