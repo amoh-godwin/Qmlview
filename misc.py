@@ -187,6 +187,24 @@ class Split():
         lines = [n for n in lines if n != '****']
         return found, lines
 
+    def pick_comp(self, lines):
+        """
+            Pick components found in ApplicationWindow
+            i.e:
+                Component functions
+        """
+
+        found = []
+        go = False
+        keep_going = False
+        cont = False
+        ind = -1
+        for line in lines:
+            ind += 1
+            if 'Component' in line and ':' in line:
+                go = True
+                found.append(line)
+                lines[ind] = "****"
             elif 'on' in line and ':' in line:
                 go = True
                 found.append(line)
