@@ -146,11 +146,47 @@ class Split():
         for line in lines:
             ind += 1
             if 'Component' in line:
-                if '}' in line:
+                go = True
+                found.append(line)
+                lines[ind] = "****"
+            elif 'on' in line and ':' in line:
+                go = True
+                found.append(line)
+                lines[ind] = "****"
+            elif '{' in line and '(' in line:
+                # this is a statement inside an a signal handler
+                keep_going = True
+                found.append(line)
+                lines[ind] = '****'
+            elif '}' in line and '{' in line and keep_going:
+                # an else statement in a signal handler
+                found.append(line)
+                lines[ind] = '****'
+            elif '}' in line and keep_going:
+                # This is probably an end statement in the stat in handler
+                found.append(line)
+                lines[ind] = '****'
+                keep_going = False
+            elif '}' in line:
+                if cont:
+                    cont = False
+                    continue
+                elif go:
+                    found.append(line)
+                    lines[ind] = '****'
+                    go = False
+            elif '{' in line:
+                break
+            else:
+                if cont:
                     continue
                 else:
-                    cont = True
-                    continue
+                    found.append(line)
+                    lines[ind] = '****'
+
+        lines = [n for n in lines if n != '****']
+        return found, lines
+
             elif 'on' in line and ':' in line:
                 go = True
                 found.append(line)
