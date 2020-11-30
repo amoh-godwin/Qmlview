@@ -11,9 +11,7 @@ class Split():
     def __init__(self, filename):
         self.filename = filename
         self.wind_user_props = {'title': 'title: qsTr("Qmlview")',
-                                    'color': 'color: "white"',
-                                    'width': 'width: 400',
-                                    'height': 'height: 100'}
+                                    'color': 'color: "white"'}
         self.orig_lines = []
         self.orig_imp_stats = []
         self.orig_bottom_lines = []
