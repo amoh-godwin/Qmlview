@@ -80,13 +80,13 @@ class Split():
                     # save the title and color
                     # then delete them
                     if 'title' in line:
-                        self.wind_user_props['title'] = line
+                        self.wind_user_props['title'] = line.strip()
                     elif 'color' in line:
-                        self.wind_user_props['color'] = line
+                        self.wind_user_props['color'] = line.strip()
                     elif 'width' in line:
-                        self.wind_user_props['width'] = line
+                        self.wind_user_props['width'] = line.strip()
                     elif 'height' in line:
-                        self.wind_user_props['height'] = line
+                        self.wind_user_props['height'] = line.strip()
 
                     lines[ind] = '***'
                 else:
