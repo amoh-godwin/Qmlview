@@ -1,7 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
-import "resources/qml/others" as Other
+import "others" as Other
 
 ApplicationWindow {
     id: __main_win_dow__
@@ -33,7 +33,7 @@ ApplicationWindow {
         }
     }
 
-    FontLoader { id: __main__live_font__; source: "./resources/fonts/fa.otf"}
+    FontLoader { id: __main__live_font__; source: "../fonts/fa.otf"}
 
 
     ApplicationWindow {
