@@ -27,6 +27,8 @@ class Live(QObject):
         self.old_code = ''
         self.old_props = ''
 
+        self.not_closed = True
+
         self._initialiase()
 
     updated = pyqtSignal(str, arguments=['updater'])
@@ -59,7 +61,7 @@ class Live(QObject):
         a_thread.start()
 
     def _auto_reload(self):
-        while True:
+        while self.not_closed:
             if not self.show_props:
                 code = self._read_file(self.watch_file)
                 if code != self.old_code:
