@@ -41,7 +41,7 @@ ApplicationWindow {
         visible: true
         width: 128
         height: 32
-        x: __main_win_dow__.x + 176
+        x: __main_win_dow__.x + ((__main_win_dow__.width - width) / 2)
         y: __main_win_dow__.y - 72
         flags: Qt.Popup | Qt.WindowSystemMenuHint
         color: "white"
