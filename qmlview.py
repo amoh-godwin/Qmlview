@@ -153,7 +153,7 @@ def live():
     chk_style()
 
     engine.quit.connect(app.quit)
-    engine.load('resources/qml/live.qml')
+    engine.load(':/resources/qml/live.qml')
 
 def put_into_frame():
     """
