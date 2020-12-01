@@ -33,7 +33,7 @@ ApplicationWindow {
         }
     }
 
-    FontLoader { id: __main__live_font__; source: "../fonts/fa.otf"}
+    FontLoader { id: __main__live_font__; source: "qrc:///fonts/fa.otf"}
 
 
     ApplicationWindow {
