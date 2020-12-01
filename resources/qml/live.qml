@@ -79,7 +79,6 @@ ApplicationWindow {
             if(component.status == Component.Ready) {
                 var obj = component.createObject(__main_win_dow__)
             }
-
         }
 
         function onPropsUpdated(props, filename) {
