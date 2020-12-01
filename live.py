@@ -96,7 +96,7 @@ class Live(QObject):
     def _read_file(self, filename):
         code = ""
 
-        splitter = Split(filename)
+        splitter = Split(filename, pick_comp=True)
         imps = splitter.orig_imp_stats
         bottom_code = splitter.orig_bottom_lines
         imps_text = ''.join(imps)
@@ -110,7 +110,7 @@ class Live(QObject):
 
     def _read_all_file(self, filename):
 
-        splitter = Split(filename)
+        splitter = Split(filename, pick_comp=True)
         imps = splitter.orig_imp_stats
         bottom_code = splitter.orig_bottom_lines
         props = splitter.wind_user_props

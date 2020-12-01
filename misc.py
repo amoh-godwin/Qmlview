@@ -8,8 +8,10 @@ class Split():
     """
 
 
-    def __init__(self, filename):
+    def __init__(self, filename, pick_comp=False):
         self.filename = filename
+        self.pick_comp = pick_comp
+
         self.wind_user_props = {'title': 'title: qsTr("Qmlview")',
                                     'color': 'color: "white"'}
         self.orig_lines = []
@@ -127,7 +129,7 @@ class Split():
         lines = [d for d in lines if d != '***']
         return found, lines
 
-    def _pick_parent_props(self, lines, pick_comp=False):
+    def _pick_parent_props(self, lines):
     
         """
             Pick all components found in ApplicationWindow
@@ -146,7 +148,7 @@ class Split():
         for line in lines:
             ind += 1
             if 'Component' in line:
-                if pick_comp:
+                if self.pick_comp:
                     go = True
                     found.append(line)
                     lines[ind] = "****"
