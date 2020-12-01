@@ -21,15 +21,9 @@ ApplicationWindow {
 
         Rectangle {
             width: parent.width
-            height: 48
-            color: "dodgerblue"
+            height: 42
+            color: "black"
         }
-    }
-
-    Rectangle {
-        width: 200
-        height: 400
-        color: "red"
     }
 
     Tt {}
