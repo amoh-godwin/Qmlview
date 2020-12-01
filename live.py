@@ -5,6 +5,7 @@ import threading
 from time import sleep
 import os
 from random import randrange
+from platform import system
 
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, QFile, QResource, QIODevice, pyqtProperty
 
@@ -22,6 +23,7 @@ class Live(QObject):
 
     def __init__(self, watch_file):
         QObject.__init__(self)
+        self.os_name = system().lower()
         self.watch_file = os.path.realpath(watch_file)
         self.folder = os.path.split(watch_file)[0]
         self.filename = os.path.join(self.folder, '00001000.qml')
@@ -125,10 +127,25 @@ class Live(QObject):
         return prop, code
 
     def _save_to_file(self, code):
+
+        # remove old file
         if os.path.exists(self.filename):
             os.unlink(self.filename)
-        self.filename = os.path.join(self.folder, str(randrange(1, 100000)) + '.qml')
+
+        # Make file hidden to user
+        if self.os_name == 'windows':
+            name = str(randrange(1, 100000))
+        else:
+            name = '.' + str(randrange(1, 100000))
+
+        self.filename = os.path.join(self.folder, name + '.qml')
+        # save file
         with open(self.filename, 'w') as fh:
             fh.write(code)
+
+        # Make file hidden on win
+        if self.os_name == 'windows':
+            dos = 'attrib +s +h ' + self.filename
+            os.system(dos)
 
         return True
