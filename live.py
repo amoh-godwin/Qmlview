@@ -4,6 +4,7 @@ Module for Live Reloading
 import threading
 from time import sleep
 import os
+from random import randrange
 
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, QFile, QResource, QIODevice, pyqtProperty
 
@@ -22,8 +23,8 @@ class Live(QObject):
     def __init__(self, watch_file):
         QObject.__init__(self)
         self.watch_file = watch_file
-        folder = os.path.split(watch_file)[0]
-        self.filename = os.path.join(folder, 'lakdff.qml')
+        self.folder = os.path.split(watch_file)[0]
+        self.filename = os.path.join(self.folder, '00001000.qml')
 
         self.show_props = False
 
@@ -121,10 +122,12 @@ class Live(QObject):
         cont += 'color: "transparent"\n' + btm_code_text + '\n}'
         code = imps_text + cont
 
-
         return prop, code
 
     def _save_to_file(self, code):
+        if os.path.exists(self.filename):
+            os.unlink(self.filename)
+        self.filename = os.path.join(self.folder, str(randrange(1, 100000)) + '.qml')
         with open(self.filename, 'w') as fh:
             fh.write(code)
 
