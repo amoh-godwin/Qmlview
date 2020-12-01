@@ -23,9 +23,14 @@ class Live(QObject):
 
     def __init__(self, watch_file):
         QObject.__init__(self)
+
         self.os_name = system().lower()
         self.watch_file = os.path.realpath(watch_file)
         self.folder = os.path.split(watch_file)[0]
+        # add permission
+        if self.os_name != 'windows':
+            # add permissions
+            os.system(f'chmod +rw {self.folder}')
         self.filename = os.path.join(self.folder, '00001000.qml')
 
         self.show_props = False
