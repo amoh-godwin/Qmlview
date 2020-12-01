@@ -1,11 +1,14 @@
 <RCC>
     <qresource prefix="/">
         <file>fonts/materialdesignicons/materialdesignicons-webfont.ttf</file>
+        <file>fonts/fa.otf</file>
         <file>icons/logo.png</file>
         <file>images/Huawei_SL.png</file>
         <file>images/Ipad.png</file>
         <file>qml/phone_replacement_qml.qml</file>
         <file>qml/replacement_qml.qml</file>
+        <file>qml/live.qml</file>
+        <file>qml/others/CustomLiveButton.qml</file>
         <file>qml/others/CustomButton.qml</file>
         <file>qml/others/CustomButton.qmlc</file>
         <file>qml/others/Nav.qml</file>

@@ -153,7 +153,7 @@ def live():
     chk_style()
 
     engine.quit.connect(app.quit)
-    engine.load('resources/qml/live.qml')
+    engine.load('qrc:///qml/live.qml')
 
 def put_into_frame():
     """
@@ -204,6 +204,7 @@ def print_help():
 Usage: qmlview source [Optional PARAMS]
                source The .qml file to be run. This should be a full path
           \t      [-phone, --phone, -p, --p] Runs source in phone mode
+          \t      [-live, --live, -l, --l] Runs source in live(auto-reload) mode
           \t      [help, --help, -h, --h] Prints this help screen.
 
 eg:
