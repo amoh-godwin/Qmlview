@@ -22,7 +22,7 @@ class Live(QObject):
 
     def __init__(self, watch_file):
         QObject.__init__(self)
-        self.watch_file = watch_file
+        self.watch_file = os.path.realpath(watch_file)
         self.folder = os.path.split(watch_file)[0]
         self.filename = os.path.join(self.folder, '00001000.qml')
 
