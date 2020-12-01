@@ -204,6 +204,7 @@ def print_help():
 Usage: qmlview source [Optional PARAMS]
                source The .qml file to be run. This should be a full path
           \t      [-phone, --phone, -p, --p] Runs source in phone mode
+          \t      [-live, --live, -l, --l] Runs source in live(auto-reload) mode
           \t      [help, --help, -h, --h] Prints this help screen.
 
 eg:
