@@ -14,8 +14,12 @@ from PyQt5.QtQml import QQmlApplicationEngine
 
 from func import FixQml, Check
 from frame import PhoneFrame
+from live import Live
 
 QResource.registerResource("_qmlview_resource_.rcc")
+
+LIVE_SET = False
+live_obj = None
 
 
 def param_help():
@@ -24,6 +28,13 @@ def param_help():
     """
     print_help()
     house_keeping(0)
+
+
+def param_live_reload():
+    """
+    Parameter for Live reloading handler
+    """
+    live()
 
 
 def param_phone():
@@ -60,6 +71,8 @@ VERSION = 'Qt ' +  QT_VERSION_STR
 PARAMS = {
         '-phone': param_phone, '--phone': param_phone,
         '-p': param_phone, '--p': param_phone,
+        '-live': param_live_reload, '--live': param_live_reload,
+        '-l': param_live_reload, '--l': param_live_reload,
         '-version': param_version, '--version': param_version,
         '-v': param_version, '--v': param_version,
         '-help': param_help, '--help': param_help,
@@ -120,8 +133,27 @@ def house_keeping(exit_code):
     Delete resource file, removed in the bundled version
     then makes the call to the system Exit
     """
+
+    global live_obj
+
+    if live_obj:
+        live_obj.not_closed= True
+        # delete random file
+        fn = live_obj.filename
+        if os.path.exists(fn):
+            os.unlink(fn)
+
     # exit
     sys.exit(exit_code)
+
+def live():
+    global LIVE_SET
+    LIVE_SET = True
+
+    chk_style()
+
+    engine.quit.connect(app.quit)
+    engine.load('resources/qml/live.qml')
 
 def put_into_frame():
     """
@@ -238,5 +270,12 @@ else:
     print('Usage: qmlview file or ./qmlview file')
     house_keeping(2)
 
+# if live parameter is used
+if LIVE_SET:
+    live_obj = Live(sys.argv[1])
+    engine.rootObjects()[0].setProperty('__qmlview__live_o_bject', live_obj)
+    engine.rootObjects()[0].setProperty('filename', sys.argv[1])
+else:
+    pass
 
 house_keeping(app.exec_())
