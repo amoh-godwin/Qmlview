@@ -1,7 +1,7 @@
 <RCC>
     <qresource prefix="/">
         <file>fonts/materialdesignicons/materialdesignicons-webfont.ttf</file>
-        <file>fonts/otf</file>
+        <file>fonts/fa.otf</file>
         <file>icons/logo.png</file>
         <file>images/Huawei_SL.png</file>
         <file>images/Ipad.png</file>
