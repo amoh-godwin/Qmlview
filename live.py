@@ -3,6 +3,7 @@ Module for Live Reloading
 """
 import threading
 from time import sleep
+import os
 
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, QFile, QResource, QIODevice, pyqtProperty
 
@@ -21,6 +22,8 @@ class Live(QObject):
     def __init__(self, watch_file):
         QObject.__init__(self)
         self.watch_file = watch_file
+        folder = os.path.split(watch_file)[0]
+        self.filename = os.path.join(folder, 'lakdff.qml')
 
         self.show_props = False
 
@@ -41,9 +44,10 @@ class Live(QObject):
             # possibly user exited out
             pass
 
-    def updater(self, code):
+    def updater(self, filename):
         try:
-            self.updated.emit(code)
+            filename = 'file:///' + filename
+            self.updated.emit(filename)
         except RuntimeError:
             # possibly user exited out
             pass
@@ -73,7 +77,8 @@ class Live(QObject):
             if not self.show_props:
                 code = self._read_file(self.watch_file)
                 if code != self.old_code:
-                    self.updater(code)
+                    self._save_to_file(code)
+                    self.updater(self.filename)
                     self.old_code = code
             else:
                 props, code = self._read_all_file(self.watch_file)
@@ -109,3 +114,9 @@ class Live(QObject):
         code = imps_text + btm_code_text
 
         return prop, code
+
+    def _save_to_file(self, code):
+        with open(self.filename, 'w') as fh:
+            fh.write(code)
+
+        return True
