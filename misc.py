@@ -127,7 +127,7 @@ class Split():
         lines = [d for d in lines if d != '***']
         return found, lines
 
-    def _pick_parent_props(self, lines):
+    def _pick_parent_props(self, lines, pick_comp=False):
     
         """
             Pick all components found in ApplicationWindow
@@ -146,9 +146,16 @@ class Split():
         for line in lines:
             ind += 1
             if 'Component' in line:
-                go = True
-                found.append(line)
-                lines[ind] = "****"
+                if pick_comp:
+                    go = True
+                    found.append(line)
+                    lines[ind] = "****"
+                else:
+                    if '}' in line:
+                        continue
+                    else:
+                        cont = True
+                        continue
             elif 'on' in line and ':' in line:
                 go = True
                 found.append(line)
