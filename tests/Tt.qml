@@ -8,4 +8,8 @@ Rectangle {
     height: 200
     color: "red"
 
+    Component.onCompleted: {
+        console.log('Hello')
+    }
+
 }
