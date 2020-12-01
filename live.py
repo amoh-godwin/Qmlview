@@ -98,7 +98,10 @@ class Live(QObject):
         bottom_code = splitter.orig_bottom_lines
         imps_text = ''.join(imps)
         btm_code_text = ''.join(bottom_code)
-        code = imps_text + btm_code_text
+        # Append Rectangle to bottom code
+        cont = '\nRectangle {\n anchors.fill: parent\n'
+        cont += 'color: "transparent"\n' + btm_code_text + '\n}'
+        code = imps_text + cont
 
         return code
 
