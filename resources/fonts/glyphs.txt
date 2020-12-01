@@ -1,0 +1,9 @@
+mat icons
+
+border-all: f00c7
+border-none: f00cd
+led-on: f032c
+
+FA
+bolt: f0e7
+burn: f46a

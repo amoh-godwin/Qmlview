@@ -3,6 +3,7 @@ import QtQuick.Controls 2.10
 import QtQuick.Layouts 1.10
 
 ApplicationWindow {
+    id: m
     visible: true
     width: 400
     height: 400
@@ -10,12 +11,21 @@ ApplicationWindow {
 
     Rectangle {
         anchors.fill: parent
+        color: "white"
 
         Text {
             anchors.centerIn: parent
-            text: "Yes"
+            text: "I really wanted this all"
+            color: "white"
         }
 
+        Rectangle {
+            width: parent.width
+            height: 42
+            color: "blue"
+        }
     }
+
+    Tt {}
 
 }

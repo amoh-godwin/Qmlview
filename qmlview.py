@@ -19,6 +19,7 @@ from live import Live
 QResource.registerResource("_qmlview_resource_.rcc")
 
 LIVE_SET = False
+live_obj = None
 
 
 def param_help():
@@ -132,6 +133,16 @@ def house_keeping(exit_code):
     Delete resource file, removed in the bundled version
     then makes the call to the system Exit
     """
+
+    global live_obj
+
+    if live_obj:
+        live_obj.not_closed= True
+        # delete random file
+        fn = live_obj.filename
+        if os.path.exists(fn):
+            os.unlink(fn)
+
     # exit
     sys.exit(exit_code)
 
@@ -142,7 +153,7 @@ def live():
     chk_style()
 
     engine.quit.connect(app.quit)
-    engine.load('live.qml')
+    engine.load('resources/qml/live.qml')
 
 def put_into_frame():
     """
@@ -261,8 +272,9 @@ else:
 
 # if live parameter is used
 if LIVE_SET:
-    l_ive = Live('./tests/livetest.qml')
-    engine.rootObjects()[0].setProperty('__qmlview__live_o_bject', l_ive)
+    live_obj = Live(sys.argv[1])
+    engine.rootObjects()[0].setProperty('__qmlview__live_o_bject', live_obj)
+    engine.rootObjects()[0].setProperty('filename', sys.argv[1])
 else:
     pass
 
