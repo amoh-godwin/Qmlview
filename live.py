@@ -37,9 +37,10 @@ class Live(QObject):
     updated = pyqtSignal(str, arguments=['updater'])
     propsUpdated = pyqtSignal(list, str, arguments=['props_updater'])
 
-    def props_updater(self, props, code):
+    def props_updater(self, props, filename):
         try:
-            self.propsUpdated.emit(props, code)
+            filename = 'file:///' + filename
+            self.propsUpdated.emit(props, filename)
         except RuntimeError:
             # possibly user exited out
             pass
@@ -83,7 +84,8 @@ class Live(QObject):
             else:
                 props, code = self._read_all_file(self.watch_file)
                 if props != self.old_props:
-                    self.props_updater(props, code)
+                    self._save_to_file(code)
+                    self.props_updater(props, self.filename)
                     self.old_props = props
                 elif code == self.old_code:
                     self.old_code = code
@@ -114,7 +116,11 @@ class Live(QObject):
         prop = [props['width'].split(':')[-1].strip(), props['height'].split(':')[-1].strip()]
         imps_text = ''.join(imps)
         btm_code_text = ''.join(bottom_code)
-        code = imps_text + btm_code_text
+        # Append Rectangle to bottom code
+        cont = '\nRectangle {\n anchors.fill: parent\n'
+        cont += 'color: "transparent"\n' + btm_code_text + '\n}'
+        code = imps_text + cont
+
 
         return prop, code
 

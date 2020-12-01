@@ -82,7 +82,7 @@ ApplicationWindow {
 
         }
 
-        function onPropsUpdated(props, code) {
+        function onPropsUpdated(props, filename) {
             var width = props[0]
             var height = props[1]
 
