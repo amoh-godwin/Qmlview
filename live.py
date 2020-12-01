@@ -3,6 +3,8 @@ Module for Live Reloading
 """
 import threading
 from time import sleep
+import os
+from random import randrange
 
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, QFile, QResource, QIODevice, pyqtProperty
 
@@ -21,6 +23,8 @@ class Live(QObject):
     def __init__(self, watch_file):
         QObject.__init__(self)
         self.watch_file = watch_file
+        self.folder = os.path.split(watch_file)[0]
+        self.filename = os.path.join(self.folder, '00001000.qml')
 
         self.show_props = False
 
@@ -34,16 +38,18 @@ class Live(QObject):
     updated = pyqtSignal(str, arguments=['updater'])
     propsUpdated = pyqtSignal(list, str, arguments=['props_updater'])
 
-    def props_updater(self, props, code):
+    def props_updater(self, props, filename):
         try:
-            self.propsUpdated.emit(props, code)
+            filename = 'file:///' + filename
+            self.propsUpdated.emit(props, filename)
         except RuntimeError:
             # possibly user exited out
             pass
 
-    def updater(self, code):
+    def updater(self, filename):
         try:
-            self.updated.emit(code)
+            filename = 'file:///' + filename
+            self.updated.emit(filename)
         except RuntimeError:
             # possibly user exited out
             pass
@@ -73,12 +79,14 @@ class Live(QObject):
             if not self.show_props:
                 code = self._read_file(self.watch_file)
                 if code != self.old_code:
-                    self.updater(code)
+                    self._save_to_file(code)
+                    self.updater(self.filename)
                     self.old_code = code
             else:
                 props, code = self._read_all_file(self.watch_file)
                 if props != self.old_props:
-                    self.props_updater(props, code)
+                    self._save_to_file(code)
+                    self.props_updater(props, self.filename)
                     self.old_props = props
                 elif code == self.old_code:
                     self.old_code = code
@@ -88,24 +96,39 @@ class Live(QObject):
     def _read_file(self, filename):
         code = ""
 
-        splitter = Split(filename)
+        splitter = Split(filename, pick_comp=True)
         imps = splitter.orig_imp_stats
         bottom_code = splitter.orig_bottom_lines
         imps_text = ''.join(imps)
         btm_code_text = ''.join(bottom_code)
-        code = imps_text + btm_code_text
+        # Append Rectangle to bottom code
+        cont = '\nRectangle {\n anchors.fill: parent\n'
+        cont += 'color: "transparent"\n' + btm_code_text + '\n}'
+        code = imps_text + cont
 
         return code
 
     def _read_all_file(self, filename):
 
-        splitter = Split(filename)
+        splitter = Split(filename, pick_comp=True)
         imps = splitter.orig_imp_stats
         bottom_code = splitter.orig_bottom_lines
         props = splitter.wind_user_props
         prop = [props['width'].split(':')[-1].strip(), props['height'].split(':')[-1].strip()]
         imps_text = ''.join(imps)
         btm_code_text = ''.join(bottom_code)
-        code = imps_text + btm_code_text
+        # Append Rectangle to bottom code
+        cont = '\nRectangle {\n anchors.fill: parent\n'
+        cont += 'color: "transparent"\n' + btm_code_text + '\n}'
+        code = imps_text + cont
 
         return prop, code
+
+    def _save_to_file(self, code):
+        if os.path.exists(self.filename):
+            os.unlink(self.filename)
+        self.filename = os.path.join(self.folder, str(randrange(1, 100000)) + '.qml')
+        with open(self.filename, 'w') as fh:
+            fh.write(code)
+
+        return True

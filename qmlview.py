@@ -138,6 +138,10 @@ def house_keeping(exit_code):
 
     if live_obj:
         live_obj.not_closed= True
+        # delete random file
+        fn = live_obj.filename
+        if os.path.exists(fn):
+            os.unlink(fn)
 
     # exit
     sys.exit(exit_code)

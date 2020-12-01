@@ -74,11 +74,14 @@ ApplicationWindow {
     Connections {
         target: __qmlview__live_o_bject
 
-        function onUpdated(code) {
-            var qml_obj = Qt.createQmlObject(code, __main_win_dow__, filename)
+        function onUpdated(filename) {
+            var component = Qt.createComponent(filename);
+            if(component.status == Component.Ready) {
+                var obj = component.createObject(__main_win_dow__)
+            }
         }
 
-        function onPropsUpdated(props, code) {
+        function onPropsUpdated(props, filename) {
             var width = props[0]
             var height = props[1]
 

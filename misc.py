@@ -8,8 +8,10 @@ class Split():
     """
 
 
-    def __init__(self, filename):
+    def __init__(self, filename, pick_comp=False):
         self.filename = filename
+        self.pick_comp = pick_comp
+
         self.wind_user_props = {'title': 'title: qsTr("Qmlview")',
                                     'color': 'color: "white"'}
         self.orig_lines = []
@@ -146,11 +148,16 @@ class Split():
         for line in lines:
             ind += 1
             if 'Component' in line:
-                if '}' in line:
-                    continue
+                if self.pick_comp:
+                    go = True
+                    found.append(line)
+                    lines[ind] = "****"
                 else:
-                    cont = True
-                    continue
+                    if '}' in line:
+                        continue
+                    else:
+                        cont = True
+                        continue
             elif 'on' in line and ':' in line:
                 go = True
                 found.append(line)
@@ -159,7 +166,63 @@ class Split():
                 # this is a statement inside an a signal handler
                 keep_going = True
                 found.append(line)
-                lines[ind] = '***'
+                lines[ind] = '****'
+            elif '}' in line and '{' in line and keep_going:
+                # an else statement in a signal handler
+                found.append(line)
+                lines[ind] = '****'
+            elif '}' in line and keep_going:
+                # This is probably an end statement in the stat in handler
+                found.append(line)
+                lines[ind] = '****'
+                keep_going = False
+            elif '}' in line:
+                if cont:
+                    cont = False
+                    continue
+                elif go:
+                    found.append(line)
+                    lines[ind] = '****'
+                    go = False
+            elif '{' in line:
+                break
+            else:
+                if cont:
+                    continue
+                else:
+                    found.append(line)
+                    lines[ind] = '****'
+
+        lines = [n for n in lines if n != '****']
+        return found, lines
+
+    def pick_comp(self, lines):
+        """
+            Pick components found in ApplicationWindow
+            i.e:
+                Component functions
+        """
+
+        found = []
+        go = False
+        keep_going = False
+        cont = False
+        ind = -1
+        for line in lines:
+            ind += 1
+            if 'Component' in line and ':' in line:
+                go = True
+                found.append(line)
+                lines[ind] = "****"
+            elif 'on' in line and ':' in line:
+                go = True
+                found.append(line)
+                lines[ind] = "****"
+            elif '{' in line and '(' in line:
+                # this is a statement inside an a signal handler
+                keep_going = True
+                found.append(line)
+                lines[ind] = '****'
             elif '}' in line and '{' in line and keep_going:
                 # an else statement in a signal handler
                 found.append(line)
