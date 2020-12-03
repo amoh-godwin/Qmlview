@@ -39,6 +39,9 @@ class Live(QObject):
 
         self.old_code = ''
         self.old_props = ''
+        self.old_qmltypes_codes = {}
+
+        self.new_qmltypes_files = {}
 
         self.not_closed = True
 
@@ -76,6 +79,7 @@ class Live(QObject):
         self.show_props = show
 
     def _initialiase(self):
+        self._find_qmltypes(self.folder)
         self._call_auto_reload()
 
     def _call_auto_reload(self):
@@ -113,6 +117,16 @@ class Live(QObject):
 
         self.u_qmltypes = tuple(u_qmltypes)
 
+    def _monitor_qmltype(self):
+        # Monitor qmltypes
+        while self.not_closed:
+            for file in self.u_qmltypes:
+                code = self._read_qmltype_file(file)
+                if code != self.old_qmltypes_codes[file]:
+                    self._save_qmltype_file(code, file)
+                    # updater
+                    self.old_qmltypes_codes[file] = code
+
     def _read_file(self, filename):
         code = ""
 
@@ -127,6 +141,9 @@ class Live(QObject):
         code = imps_text + cont
 
         return code
+
+    def _read_qmltype_file(self, filename):
+        return ''
 
     def _read_all_file(self, filename):
 
@@ -167,3 +184,6 @@ class Live(QObject):
             os.system(dos)
 
         return True
+
+    def _save_qmltype_file(self, code, filename):
+        pass
