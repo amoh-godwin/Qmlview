@@ -6,6 +6,7 @@ from time import sleep
 import os
 from random import randrange
 from platform import system
+from glob import glob
 
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, QFile, QResource, QIODevice, pyqtProperty
 
@@ -27,6 +28,7 @@ class Live(QObject):
         self.os_name = system().lower()
         self.watch_file = os.path.realpath(watch_file)
         self.folder = os.path.split(watch_file)[0]
+        self.u_qmltypes = ()
         # add permission
         if self.os_name != 'windows':
             # add permissions
@@ -99,6 +101,17 @@ class Live(QObject):
                     self.old_code = code
                     self.updater(code)
             sleep(0.1)
+
+    def _find_qmltypes(self, folder):
+        u_qmltypes = list(self.u_qmltypes)
+        patt = os.path.join(folder, '*.qml')
+        items = glob(patt)
+        for x in items:
+            name = os.path.split(x)[1]
+            if name.istitle():
+                u_qmltypes.append(x)
+
+        self.u_qmltypes = tuple(u_qmltypes)
 
     def _read_file(self, filename):
         code = ""
