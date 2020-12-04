@@ -116,7 +116,11 @@ class Live(QObject):
             name = os.path.split(x)[1]
             if name.istitle():
                 type_name = name.rsplit('.')[0]
-                self.u_qmltypes_map[type_name] = type_name
+                new_t_name = f'Live{randrange(1,250)}_{type_name}'
+                self.u_qmltypes_map[type_name] = new_t_name
+                new_file = os.path.join(folder, new_t_name+'.qml')
+                self._save_qmltype_file('', new_file)
+                self.new_qmltypes_files[x] = new_file
                 u_qmltypes.append(x)
 
         self.u_qmltypes = tuple(u_qmltypes)
@@ -175,10 +179,17 @@ class Live(QObject):
     def _rename_all(self):
         # reconstruct all
         for x in self.u_qmltypes:
+
+            with open(x, 'r') as fr:
+                old_code = fr.read()
+
             old_file = self.new_qmltypes_files[x]
             folder, base_name = tuple(os.path.split(x))
+            old_type = base_name.rsplit('.')[0]
             new_name = f'Live{randrange(1,250)}_{base_name}'
-            new_file = os.path.join(folder, new_name)
+
+            new_file = os.path.join(folder, base_name)
+
             if old_file:
                 os.rename(old_file, new_file)
             else:
@@ -211,20 +222,15 @@ class Live(QObject):
     def _save_qmltype_file(self, code, filename):
 
         # delete the current filename used for the qmltype
-        if os.path.exists(self.new_qmltypes_files[filename]):
-            os.unlink(self.new_qmltypes_files[filename])
+        """"
+        if filename:
+            os.unlink(filename)
+        """"
 
-        folder, base_name = tuple(os.path.split(filename))
-        name = 'Live' + str(randrange(1, 25)) + '_' + base_name
-        new_name = os.path.join(folder, name)
-
-        # set new name
-        self.new_qmltypes_files[filename] = new_name
-
-        with open(new_name, 'w') as fh:
+        with open(filename, 'w') as fh:
             fh.write(code)
 
         # Make file hidden on win
         if self.os_name == 'windows':
-            dos = 'attrib +s +h ' + new_name
+            dos = 'attrib +s +h ' + filename
             os.system(dos)
