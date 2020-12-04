@@ -267,6 +267,6 @@ class Live(QObject):
             fh.write(code)
 
         # Make file hidden on win
-        if self.os_name == 'windows':
+        """if self.os_name == 'windows':
             dos = 'attrib +s +h ' + new_file
-            os.system(dos)
+            os.system(dos)"""
