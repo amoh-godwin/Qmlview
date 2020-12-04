@@ -143,6 +143,20 @@ class Live(QObject):
         if entry:
             return True
 
+    def _replace_conts(self, filename):
+        # replace all occurences of a type with
+        # the new one with a common space between the curly bracket
+        with open(filename, 'r') as fh:
+            data = fh.read()
+
+        for x in self.u_qmltypes_map:
+            patt = x + '\s*{'
+            # no of types found in file
+            founds = re.findall(r''+patt, data)
+            yx = self.u_qmltypes_map[x] + ' {'
+            for y in founds:
+                data = data.replace(y, yx)
+
     def _monitor_qmltype(self):
         # Monitor qmltypes
         while self.not_closed:
