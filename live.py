@@ -161,6 +161,18 @@ class Live(QObject):
 
         return prop, code
 
+    def _rename_all(self):
+        # reconstruct all
+        for x in self.u_qmltypes:
+            old_file = self.new_qmltypes_files[x]
+            folder, base_name = tuple(os.path.split(x))
+            new_name = f'Live{randrange(1,250)}_{base_name}'
+            new_file = os.path.join(folder, new_name)
+            if old_file:
+                os.rename(old_file, new_file)
+            else:
+                os.rename(x, new_file)
+
     def _save_to_file(self, code):
 
         # remove old file
