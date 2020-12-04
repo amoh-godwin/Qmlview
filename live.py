@@ -4,6 +4,7 @@ Module for Live Reloading
 import threading
 from time import sleep
 import os
+import re
 from random import randrange
 from platform import system
 from glob import glob
@@ -29,6 +30,7 @@ class Live(QObject):
         self.watch_file = os.path.realpath(watch_file)
         self.folder = os.path.split(watch_file)[0]
         self.u_qmltypes = ()
+        self.u_qmltypes_map = {}
         # add permission
         if self.os_name != 'windows':
             # add permissions
@@ -113,9 +115,18 @@ class Live(QObject):
         for x in items:
             name = os.path.split(x)[1]
             if name.istitle():
+                type_name = name.rsplit('.')[0]
+                self.u_qmltypes_map[type_name] = type_name
                 u_qmltypes.append(x)
 
         self.u_qmltypes = tuple(u_qmltypes)
+
+    def _find_qmltypes_in_file(self, filename):
+        # useless delete
+        with open(filename, 'r') as fh:
+            data = fh.read()
+
+        all_types = re.findall(r'\s*[A-Z][A-Za-z0-9]+\s*{', data)
 
     def _monitor_qmltype(self):
         # Monitor qmltypes
