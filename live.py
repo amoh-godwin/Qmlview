@@ -132,6 +132,17 @@ class Live(QObject):
 
         all_types = re.findall(r'\s*[A-Z][A-Za-z0-9]+\s*{', data)
 
+    def _is_in_file(self, needle, filename):
+        # check if a qml file contains type
+
+        with open(filename, 'r') as fh:
+            data = fh.read()
+
+        patt = needle + ' {'
+        entry = re.findall(r''+patt, data)
+        if entry:
+            return True
+
     def _monitor_qmltype(self):
         # Monitor qmltypes
         while self.not_closed:
