@@ -247,15 +247,17 @@ class Live(QObject):
     def _save_qmltype_file(self, code, filename):
 
         # delete the current filename used for the qmltype
-        """"
+        """
         if filename:
             os.unlink(filename)
-        """"
+        """
 
-        with open(filename, 'w') as fh:
+        new_file = self.new_qmltypes_files[filename]
+
+        with open(new_file, 'w') as fh:
             fh.write(code)
 
         # Make file hidden on win
         if self.os_name == 'windows':
-            dos = 'attrib +s +h ' + filename
+            dos = 'attrib +s +h ' + new_file
             os.system(dos)
