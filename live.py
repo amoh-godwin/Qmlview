@@ -82,6 +82,13 @@ class Live(QObject):
 
     def _initialiase(self):
         self._find_qmltypes(self.folder)
+        # replace all qmltypes in there
+        patt = os.path.join(folder, 'Live*.qml')
+        items = glob(patt)
+        items.append(self.filename)
+        for item in items:
+            self._init_replace_conts(item)
+
         self._call_auto_reload()
 
     def _call_auto_reload(self):
@@ -115,11 +122,13 @@ class Live(QObject):
         for x in items:
             name = os.path.split(x)[1]
             if name.istitle():
+                with open(x, 'r') as fh:
+                    code = fh.read()
                 type_name = name.rsplit('.')[0]
                 new_t_name = f'Live{randrange(1,250)}_{type_name}'
                 self.u_qmltypes_map[type_name] = new_t_name
                 new_file = os.path.join(folder, new_t_name+'.qml')
-                self._save_qmltype_file('', new_file)
+                self._save_qmltype_file(code, new_file)
                 self.new_qmltypes_files[x] = new_file
                 u_qmltypes.append(x)
 
@@ -143,7 +152,7 @@ class Live(QObject):
         if entry:
             return True
 
-    def _replace_conts(self, filename):
+    def _init_replace_conts(self, filename):
         # replace all occurences of a type with
         # the new one with a common space between the curly bracket
         with open(filename, 'r') as fh:
