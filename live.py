@@ -61,6 +61,7 @@ class Live(QObject):
             pass
 
     def updater(self, filename):
+        print('updater', filename)
         try:
             filename = 'file:///' + filename
             self.updated.emit(filename)
@@ -81,10 +82,21 @@ class Live(QObject):
         self.show_props = show
 
     def _initialiase(self):
+        # Initialise everything
+        print('init')
+        with open(self.watch_file, 'r') as fh:
+            code = fh.read()
+
+        with open(self.filename, 'w') as fw:
+            fw.write(code)
+
+        # pick initial qmltypes
         self._find_qmltypes(self.folder)
         # replace all qmltypes in there
-        patt = os.path.join(self.folder, '*.qml')
+        # replace it in all of our qmltypes and the filename
+        patt = os.path.join(self.folder, 'Live*_*.qml')
         items = glob(patt)
+        print('items: ', items)
         items.append(self.filename)
         for item in items:
             self._init_replace_conts(item)
@@ -99,6 +111,7 @@ class Live(QObject):
         a_thread.start()
 
     def _auto_reload(self):
+        print('auto reload')
         while self.not_closed:
             if not self.show_props:
                 code = self._read_file(self.watch_file)
@@ -118,25 +131,30 @@ class Live(QObject):
             sleep(0.1)
 
     def _find_qmltypes(self, folder):
+        print('find_qmltypes')
         u_qmltypes = list(self.u_qmltypes)
         patt = os.path.join(folder, '*.qml')
         items = glob(patt)
         for x in items:
             name = os.path.split(x)[1]
-            if name.istitle():
+            if name[0].istitle():
                 with open(x, 'r') as fh:
                     code = fh.read()
+                    print(x, len(code))
                 type_name = name.rsplit('.')[0]
                 new_t_name = f'Live{randrange(1,250)}_{type_name}'
                 self.u_qmltypes_map[type_name] = new_t_name
                 new_file = os.path.join(folder, new_t_name+'.qml')
-                self._save_qmltype_file(code, new_file)
+                print(x, new_file)
                 self.new_qmltypes_files[x] = new_file
+                self.old_qmltypes_codes[x] = code
+                self._save_qmltype_file(code, new_file)
                 u_qmltypes.append(x)
 
         self.u_qmltypes = tuple(u_qmltypes)
 
     def _find_qmltypes_in_file(self, filename):
+        print('find_qmltypes_in_file')
         # useless delete
         with open(filename, 'r') as fh:
             data = fh.read()
@@ -144,6 +162,7 @@ class Live(QObject):
         all_types = re.findall(r'\s*[A-Z][A-Za-z0-9]+\s*{', data)
 
     def _is_in_file(self, needle, filename):
+        print('_is_in_file')
         # check if a qml file contains type
 
         with open(filename, 'r') as fh:
@@ -154,6 +173,7 @@ class Live(QObject):
             return True
 
     def _init_replace_conts(self, filename):
+        print('init_replace_conts')
         # replace all occurences of a type with
         # the new one with a common space between the curly bracket
         with open(filename, 'r') as fh:
@@ -167,34 +187,48 @@ class Live(QObject):
             for y in founds:
                 data = data.replace(y, yx)
 
+        # save to that file
+        self._save_qmltype_file(data, filename)
+
     def monitor_qmltypes(self):
         m_thread = threading.Thread(target=self._monitor_qmltype)
         m_thread.daemon = True
         m_thread.start()
 
     def _monitor_qmltype(self):
+        print('_monitor_qmltype')
         # Monitor qmltypes
         while self.not_closed:
             for file in self.u_qmltypes:
                 code = self._read_qmltype_file(file)
+                print(file, len(code))
                 if code != self.old_qmltypes_codes[file]:
                     new_code = self._load_with_qmltypes(code)
                     self._save_qmltype_file(new_code, file)
                     self._rename_all()
                     # updater
-                    self._save_to_file(new_code)
+                    with open(self.filename, 'r') as fh:
+                        data = fh.read()
+                    new_data = self._load_with_qmltypes(data)
+                    self._save_to_file(new_data)
                     self.updater(self.filename)
                     self.old_qmltypes_codes[file] = code
+            sleep(1)
 
     def _load_with_qmltypes(self, code):
-
+        print('_load_with_qmltypes: ', len(code))
         for x in self.u_qmltypes_map:
+            xs = x + ' {'
+            ys = self.u_qmltypes_map[x] + ' {'
             if x in code:
-                code = code.replace(x, self.u_qmltypes_map[x])
-        
+                print('loe: ', x, self.u_qmltypes_map[x], self.u_qmltypes_map)
+                code = code.replace(xs, ys)
+                print(len(code))
+
         return code
 
     def _read_file(self, filename):
+        print('read_file', filename)
         code = ""
 
         splitter = Split(filename, pick_comp=True)
@@ -210,10 +244,14 @@ class Live(QObject):
         return code
 
     def _read_qmltype_file(self, filename):
-        return ''
+        print('_read_qmltype')
+        with open(filename, 'r') as fh:
+            data = fh.read()
+        return data
 
     def _read_all_file(self, filename):
 
+        print('read_all_file')
         splitter = Split(filename, pick_comp=True)
         imps = splitter.orig_imp_stats
         bottom_code = splitter.orig_bottom_lines
@@ -229,6 +267,7 @@ class Live(QObject):
         return prop, code
 
     def _rename_all(self):
+        print('rename_all')
         # reconstruct all
         # generate new names for a qml type
         # rename that file
@@ -240,6 +279,8 @@ class Live(QObject):
             folder, base_name = tuple(os.path.split(x))
             old_t_name = base_name.rsplit('.')[0]
             main_name = old_t_name.split('_', 1)[-1]
+            print(main_name, old_t_name, base_name)
+            print('up')
             # new name
             new_name = f'Live{randrange(1,250)}_{main_name}'
             # rename
@@ -257,9 +298,11 @@ class Live(QObject):
                         data = fh.read()
 
                     data = data.replace(old_obj, new_obj)
+                    print('data hre: ', data)
 
     def _save_to_file(self, code):
 
+        print('_save_to_file')
         # remove old file
         if os.path.exists(self.filename):
             os.unlink(self.filename)
@@ -271,7 +314,15 @@ class Live(QObject):
             name = '.' + str(randrange(1, 100000))
 
         self.filename = os.path.join(self.folder, name + '.qml')
+
+        # replace
+        for x in self.u_qmltypes_map:
+            rx = f'\s*{x}'+' {'
+            yx = f'\n {self.u_qmltypes_map[x]}'+' {'
+            code = re.sub(rx, yx, code)
+
         # save file
+        print('some code ', self.filename, code)
         with open(self.filename, 'w') as fh:
             fh.write(code)
 
@@ -284,15 +335,17 @@ class Live(QObject):
 
     def _save_qmltype_file(self, code, filename):
 
+        print('_save_qmltype_file: ', filename)
         # delete the current filename used for the qmltype
         """
         if filename:
             os.unlink(filename)
         """
 
-        new_file = self.new_qmltypes_files[filename]
+        #new_file = self.new_qmltypes_files[filename]
 
-        with open(new_file, 'w') as fh:
+        print('len:',len(code))
+        with open(filename, 'w') as fh:
             fh.write(code)
 
         # Make file hidden on win
