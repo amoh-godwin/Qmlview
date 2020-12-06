@@ -179,13 +179,22 @@ class Live(QObject):
         with open(filename, 'r') as fh:
             data = fh.read()
 
-        for x in self.u_qmltypes_map:
+        print('***************\n', data)
+        print('\n', self.u_qmltypes_map, '\n')
+
+        u_qml_map = self.u_qmltypes_map.copy()
+        for x in u_qml_map:
             patt = x + r'\s*{'
             # no of types found in file
             founds = re.findall(r''+patt, data)
-            yx = self.u_qmltypes_map[x] + ' {'
+            y = self.u_qmltypes_map[x]
+            yx = '\n' + y + ' {'
+            self.u_qmltypes_map[y] = ''
             for y in founds:
                 data = data.replace(y, yx)
+
+        print('***************\n', 'suprising')
+        print(data, '\n\n')
 
         # save to that file
         self._save_qmltype_file(data, filename)
@@ -201,8 +210,9 @@ class Live(QObject):
         while self.not_closed:
             for file in self.u_qmltypes:
                 code = self._read_qmltype_file(file)
-                print(file, len(code))
                 if code != self.old_qmltypes_codes[file]:
+                    # re-arrange the code to the code we all know
+                    # and deal with inside qml
                     new_code = self._load_with_qmltypes(code)
                     self._save_qmltype_file(new_code, file)
                     self._rename_all()
@@ -217,14 +227,17 @@ class Live(QObject):
 
     def _load_with_qmltypes(self, code):
         print('_load_with_qmltypes: ', len(code))
+        print('\n*****************\n\n')
+        print('before\n', code)
         for x in self.u_qmltypes_map:
-            xs = x + ' {'
-            ys = self.u_qmltypes_map[x] + ' {'
-            if x in code:
-                print('loe: ', x, self.u_qmltypes_map[x], self.u_qmltypes_map)
-                code = code.replace(xs, ys)
-                print(len(code))
+            xs = r'\s' + x + ' {'
+            ys = '\n' +self.u_qmltypes_map[x] + ' {'
+            print('loe: ', x, self.u_qmltypes_map[x], self.u_qmltypes_map)
+            code = re.sub(xs, ys, code)
+            print(len(code))
 
+        print('after \n', code)
+        print('*********************\n\n\n')
         return code
 
     def _read_file(self, filename):
@@ -273,6 +286,7 @@ class Live(QObject):
         # rename that file
         # rename all files containing that name
         all_types = self.new_qmltypes_files.copy()
+        print('\nall types\n', all_types)
         for x in all_types:
 
             old_file = all_types[x]
@@ -298,7 +312,9 @@ class Live(QObject):
                         data = fh.read()
 
                     data = data.replace(old_obj, new_obj)
-                    print('data hre: ', data)
+
+                    with open(y, 'w') as fw:
+                        fw.write(data)
 
     def _save_to_file(self, code):
 
@@ -317,12 +333,11 @@ class Live(QObject):
 
         # replace
         for x in self.u_qmltypes_map:
-            rx = f'\s*{x}'+' {'
-            yx = f'\n {self.u_qmltypes_map[x]}'+' {'
+            rx = r'\s' + x +' {'
+            yx = '\n' + self.u_qmltypes_map[x] +' {'
             code = re.sub(rx, yx, code)
 
         # save file
-        print('some code ', self.filename, code)
         with open(self.filename, 'w') as fh:
             fh.write(code)
 
@@ -343,8 +358,6 @@ class Live(QObject):
         """
 
         #new_file = self.new_qmltypes_files[filename]
-
-        print('len:',len(code))
         with open(filename, 'w') as fh:
             fh.write(code)
 
