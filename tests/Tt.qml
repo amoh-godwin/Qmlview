@@ -9,7 +9,7 @@ Rectangle {
     color: "red"
 
     Component.onCompleted: {
-        console.log('Hellod')
+        console.log('Hello')
     }
 
 }
