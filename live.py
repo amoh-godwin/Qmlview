@@ -140,12 +140,10 @@ class Live(QObject):
             if name[0].istitle():
                 with open(x, 'r') as fh:
                     code = fh.read()
-                    print(x, len(code))
                 type_name = name.rsplit('.')[0]
                 new_t_name = f'Live{randrange(1,250)}_{type_name}'
                 self.u_qmltypes_map[type_name] = new_t_name
                 new_file = os.path.join(folder, new_t_name+'.qml')
-                print(x, new_file)
                 self.new_qmltypes_files[x] = new_file
                 self.old_qmltypes_codes[x] = code
                 self._save_qmltype_file(code, new_file)
@@ -179,9 +177,6 @@ class Live(QObject):
         with open(filename, 'r') as fh:
             data = fh.read()
 
-        print('***************\n', data)
-        print('\n', self.u_qmltypes_map, '\n')
-
         u_qml_map = self.u_qmltypes_map.copy()
         for x in u_qml_map:
             patt = x + r'\s*{'
@@ -189,12 +184,9 @@ class Live(QObject):
             founds = re.findall(r''+patt, data)
             y = self.u_qmltypes_map[x]
             yx = '\n' + y + ' {'
-            self.u_qmltypes_map[y] = ''
+            #self.u_qmltypes_map[y] = ''
             for y in founds:
                 data = data.replace(y, yx)
-
-        print('***************\n', 'suprising')
-        print(data, '\n\n')
 
         # save to that file
         self._save_qmltype_file(data, filename)
@@ -220,24 +212,23 @@ class Live(QObject):
                     with open(self.filename, 'r') as fh:
                         data = fh.read()
                     new_data = self._load_with_qmltypes(data)
+                    print('***************\n', 'old')
+                    print(data)
+                    print('new')
+                    print(new_data)
+                    print('\n*******************\n')
                     self._save_to_file(new_data)
                     self.updater(self.filename)
                     self.old_qmltypes_codes[file] = code
             sleep(1)
 
     def _load_with_qmltypes(self, code):
-        print('_load_with_qmltypes: ', len(code))
-        print('\n*****************\n\n')
-        print('before\n', code)
+        print('_load_with_qmltypes: ')
         for x in self.u_qmltypes_map:
             xs = r'\s' + x + ' {'
             ys = '\n' +self.u_qmltypes_map[x] + ' {'
-            print('loe: ', x, self.u_qmltypes_map[x], self.u_qmltypes_map)
             code = re.sub(xs, ys, code)
-            print(len(code))
 
-        print('after \n', code)
-        print('*********************\n\n\n')
         return code
 
     def _read_file(self, filename):
@@ -286,15 +277,12 @@ class Live(QObject):
         # rename that file
         # rename all files containing that name
         all_types = self.new_qmltypes_files.copy()
-        print('\nall types\n', all_types)
         for x in all_types:
 
             old_file = all_types[x]
-            folder, base_name = tuple(os.path.split(x))
+            folder, base_name = tuple(os.path.split(old_file))
             old_t_name = base_name.rsplit('.')[0]
             main_name = old_t_name.split('_', 1)[-1]
-            print(main_name, old_t_name, base_name)
-            print('up')
             # new name
             new_name = f'Live{randrange(1,250)}_{main_name}'
             # rename
@@ -305,15 +293,16 @@ class Live(QObject):
 
             # rename all files with that name
             for y in self.new_qmltypes_files:
-                old_obj = old_t_name + ' {'
-                new_obj = new_name + ' {'
-                if self._is_in_file(old_obj, y):
-                    with open(y, 'r') as fh:
+                qml_file = self.new_qmltypes_files[y]
+                old_obj = r'\s' + old_t_name + ' {'
+                new_obj = '\n' + new_name + ' {'
+                if self._is_in_file(old_obj, qml_file):
+                    with open(qml_file, 'r') as fh:
                         data = fh.read()
 
-                    data = data.replace(old_obj, new_obj)
+                    data = re.sub(old_obj, new_obj, data)
 
-                    with open(y, 'w') as fw:
+                    with open(qml_file, 'w') as fw:
                         fw.write(data)
 
     def _save_to_file(self, code):
