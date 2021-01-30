@@ -137,6 +137,9 @@ class Live(QObject):
             sleep(0.1)
 
     def _find_qmltypes(self, folder):
+        """
+        Initially find all qmltypes
+        """
         u_qmltypes = list(self.u_qmltypes)
         patt = os.path.join(folder, '*.qml')
         items = glob(patt)
@@ -210,10 +213,6 @@ class Live(QObject):
                     # re-arrange the code to the code we all know
                     # and deal with inside qml
                     new_code = self._load_with_qmltypes(code)
-                    #folder, fn = os.path.split(file)
-                    #old_key = fn.split('.qml')[0]
-                    #curr_key = self.u_qmltypes_map[old_key]
-                    #print('curr key: ', curr_key)
                     self._save_qmltype_file(new_code, file)
                     self._rename_all()
                     # updater
@@ -221,10 +220,6 @@ class Live(QObject):
                         data = fh.read()
                     new_data = self._load_with_qmltypes(data)
                     self._save_to_file(new_data)
-                    #print(self.filename)
-                    with open(self.filename, 'r') as fh:
-                        data = fh.read()
-                        #print(data)
                     self.updater(self.filename)
                     self.old_qmltypes_codes[file] = code
             sleep(0.1)
@@ -293,8 +288,6 @@ class Live(QObject):
             self.new_qmltypes_files[x] = new_file
             self.u_qmltypes_map[old_t_name] = new_name
 
-            print(self.new_qmltypes_files)
-            print(self.u_qmltypes_map, '\n\n\n')
 
             # rename all files with that name
             for y in self.new_qmltypes_files:
@@ -354,14 +347,13 @@ class Live(QObject):
         _, name = os.path.split(filename)
         if name.startswith('Live'):
             os.unlink(filename)
-            pass
         
 
         new_file = self.new_qmltypes_files[filename]
         with open(new_file, 'w') as fh:
             fh.write(code)
 
-        # Make file hidden on win
-        if self.os_name == 'windows':
-            dos = 'attrib +s +h ' + new_file
-            #os.system(dos)
+        # Make file hidden on win (Currently causes problems)
+        # if self.os_name == 'windows':
+            # dos = 'attrib +s +h ' + new_file
+            # os.system(dos)
