@@ -288,6 +288,11 @@ class Live(QObject):
             self.new_qmltypes_files[x] = new_file
             self.u_qmltypes_map[old_t_name] = new_name
 
+            # delete the old keys
+            for k,v in self.u_qmltypes_map.copy().items():
+                if v == old_t_name:
+                    del self.u_qmltypes_map[k]
+                    break
 
             # rename all files with that name
             for y in self.new_qmltypes_files:
