@@ -96,6 +96,7 @@ class Live(QObject):
         patt = os.path.join(self.folder, 'Live*_*.qml')
         items = glob(patt)
         items.append(self.filename)
+        print(items)
         for item in items:
             self._init_replace_conts(item)
 
@@ -121,6 +122,7 @@ class Live(QObject):
                 code = self._read_file(self.watch_file)
                 if code != self.old_code:
                     self._save_to_file(code)
+                    # send filename to the UI
                     self.updater(self.filename)
                     self.old_code = code
             else:
@@ -149,7 +151,9 @@ class Live(QObject):
                 new_file = os.path.join(folder, new_t_name+'.qml')
                 self.new_qmltypes_files[x] = new_file
                 self.old_qmltypes_codes[x] = code
-                self._save_qmltype_file(code, new_file)
+                # save to a new qmltype file
+                with open(new_file, 'w') as fh:
+                    fh.write(code)
                 u_qmltypes.append(x)
 
         self.u_qmltypes = tuple(u_qmltypes)
@@ -189,7 +193,8 @@ class Live(QObject):
                 data = data.replace(y, yx)
 
         # save to that file
-        self._save_qmltype_file(data, filename)
+        with open(filename, 'w') as fh:
+            fh.write(data)
 
     def monitor_qmltypes(self):
         m_thread = threading.Thread(target=self._monitor_qmltype)
@@ -205,6 +210,10 @@ class Live(QObject):
                     # re-arrange the code to the code we all know
                     # and deal with inside qml
                     new_code = self._load_with_qmltypes(code)
+                    #folder, fn = os.path.split(file)
+                    #old_key = fn.split('.qml')[0]
+                    #curr_key = self.u_qmltypes_map[old_key]
+                    #print('curr key: ', curr_key)
                     self._save_qmltype_file(new_code, file)
                     self._rename_all()
                     # updater
@@ -212,9 +221,13 @@ class Live(QObject):
                         data = fh.read()
                     new_data = self._load_with_qmltypes(data)
                     self._save_to_file(new_data)
+                    #print(self.filename)
+                    with open(self.filename, 'r') as fh:
+                        data = fh.read()
+                        #print(data)
                     self.updater(self.filename)
                     self.old_qmltypes_codes[file] = code
-            sleep(1)
+            sleep(0.1)
 
     def _load_with_qmltypes(self, code):
         for x in self.u_qmltypes_map:
@@ -280,6 +293,9 @@ class Live(QObject):
             self.new_qmltypes_files[x] = new_file
             self.u_qmltypes_map[old_t_name] = new_name
 
+            print(self.new_qmltypes_files)
+            print(self.u_qmltypes_map, '\n\n\n')
+
             # rename all files with that name
             for y in self.new_qmltypes_files:
                 qml_file = self.new_qmltypes_files[y]
@@ -308,6 +324,8 @@ class Live(QObject):
 
         self.filename = os.path.join(self.folder, name + '.qml')
 
+        # TODO
+        # whole replace function should be removed
         # replace
         for x in self.u_qmltypes_map:
             rx = r'\s' + x +' {'
@@ -321,23 +339,29 @@ class Live(QObject):
         # Make file hidden on win
         if self.os_name == 'windows':
             dos = 'attrib +s +h ' + self.filename
-            os.system(dos)
+            #os.system(dos)
 
         return True
 
     def _save_qmltype_file(self, code, filename):
 
-        # delete the current filename used for the qmltype
         """
-        if filename:
-            os.unlink(filename)
+        saves the code of a qmltype
+         to a new filename specified by self.new_qmltypes_files
         """
 
-        #new_file = self.new_qmltypes_files[filename]
-        with open(filename, 'w') as fh:
+        # delete the current filename used for the qmltype
+        _, name = os.path.split(filename)
+        if name.startswith('Live'):
+            os.unlink(filename)
+            pass
+        
+
+        new_file = self.new_qmltypes_files[filename]
+        with open(new_file, 'w') as fh:
             fh.write(code)
 
         # Make file hidden on win
-        """if self.os_name == 'windows':
+        if self.os_name == 'windows':
             dos = 'attrib +s +h ' + new_file
-            os.system(dos)"""
+            #os.system(dos)
