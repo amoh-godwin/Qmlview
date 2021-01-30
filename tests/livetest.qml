@@ -22,7 +22,7 @@ ApplicationWindow {
         Rectangle {
             width: parent.width
             height: 42
-            color: "blue"
+            color: "gold"
         }
     }
 

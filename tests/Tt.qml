@@ -6,7 +6,7 @@ import QtQuick.Layouts 1.10
 Rectangle {
     width: 200
     height: 200
-    color: "green"
+    color: "indigo"
 
     Component.onCompleted: {
         console.log('Hello')
