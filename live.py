@@ -104,11 +104,18 @@ class Live(QObject):
         self._call_auto_reload()
 
     def _call_auto_reload(self):
+        """
+        The method creates the thread for the _auto_reload method
+        """
         a_thread = threading.Thread(target=self._auto_reload)
         a_thread.daemon = True
         a_thread.start()
 
     def _auto_reload(self):
+        """
+        This is the method that monitors
+         and updates the watch file
+        """
         while self.not_closed:
             if not self.show_props:
                 code = self._read_file(self.watch_file)
