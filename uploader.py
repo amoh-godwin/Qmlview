@@ -10,11 +10,11 @@ from email.mime.text import MIMEText
 import tarfile
 import zipfile
 
-print(sys.argv)
-print(os.environ)
+print(len(sys.argv[2]))
 
-password = os.environ['PASS']
-_, os_name = sys.argv
+
+_, os_name, password = sys.argv
+
 
 folder_name = os.path.realpath('./dist/qmlview/')
 
