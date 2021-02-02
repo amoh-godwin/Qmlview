@@ -34,5 +34,3 @@ jobs:
         pyinstaller qmlview.spec
         # python install_dependencies.py ${{ matrix.os }}
         python uploader.py ${{ matrix.os }} ${{ secrets.ACCESS_TOKEN }}
-        gh auth login --with-token < token.txt
-        gh release create v3.1a5 env.${{matrix.os}}
