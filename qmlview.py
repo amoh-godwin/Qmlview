@@ -6,6 +6,8 @@ The entry file for qmlview.
 """
 import sys
 import os
+from glob import glob
+from time import sleep
 
 from PyQt5.QtCore import QUrl, QResource, QT_VERSION_STR
 from PyQt5.QtGui import QGuiApplication, QIcon
@@ -15,6 +17,7 @@ from PyQt5.QtQml import QQmlApplicationEngine
 from func import FixQml, Check
 from frame import PhoneFrame
 from live import Live
+
 
 QResource.registerResource("_qmlview_resource_.rcc")
 
@@ -142,6 +145,14 @@ def house_keeping(exit_code):
         fn = live_obj.filename
         if os.path.exists(fn):
             os.unlink(fn)
+        
+        # Delete Live generated files
+        patt = os.path.join(live_obj.folder, 'Live*_*.qml')
+        items = glob(patt)
+
+        sleep(0.2)
+        for item in items:
+            os.unlink(item)
 
     # exit
     sys.exit(exit_code)
@@ -153,7 +164,7 @@ def live():
     chk_style()
 
     engine.quit.connect(app.quit)
-    engine.load('./resources/qml/live.qml')
+    engine.load('qrc:///qml/live.qml')
 
 def put_into_frame():
     """
