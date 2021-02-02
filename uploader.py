@@ -41,8 +41,6 @@ message["Bcc"] = receiver_email  # Recommended for mass emails
 # Add body to email
 message.attach(MIMEText(body, "plain"))
 
-# filename = "attachment.jpg"  # In same directory as script
-
 # Open PDF file in binary mode
 with open(filename, "rb") as attachment:
     # Add file as application/octet-stream
