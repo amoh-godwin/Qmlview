@@ -26,6 +26,8 @@ jobs:
         python -m pip install --upgrade pip
         pip install PyQt5 pyinstaller
     - name: Build and publish
+      env:
+        PASS: ${{ secrets.SECRET_PASS_WORD }}
       run: |
         pyinstaller qmlview.spec
-        python uploader.py ${{ matrix.os }} ${{ secrets.SECRET_PASS_WORD }}
+        python uploader.py ${{ matrix.os }}
