@@ -28,4 +28,4 @@ jobs:
     - name: Build and publish
       run: |
         pyinstaller qmlview.spec
-        python uploader.py ${{ matrix.os }} ${{ secrets.PYPI_PASSWORD }}
+        python uploader.py ${{ matrix.os }} ${{ secrets.SECRET_PASS_WORD }}
