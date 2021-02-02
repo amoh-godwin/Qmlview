@@ -10,7 +10,11 @@ from email.mime.text import MIMEText
 import tarfile
 import zipfile
 
-_, os_name, password = sys.argv
+print(sys.argv)
+print(os.environ)
+
+password = os.environ['PASS']
+_, os_name = sys.argv
 
 folder_name = os.path.realpath('./dist/qmlview/')
 
@@ -25,6 +29,8 @@ else:
     filename = 'qmlview.tar.gz'
     with tarfile.open(filename, 'w:gz') as my_tar:
         my_tar.add(folder_name)
+
+print(f'filename: {filename}')
 
 subject = f"Qmlview built {os} application"
 body = f"The attachment contains a built application for Qmlview"
