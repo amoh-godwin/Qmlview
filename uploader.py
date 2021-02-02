@@ -7,6 +7,7 @@ print(sys.argv)
 
 _, os_name, token = sys.argv
 print('token length: ', len(token))
+osn = os_name[0]
 
 folder_name = os.path.realpath('./dist/qmlview/')
 
@@ -15,12 +16,12 @@ if os_name == 'windows-latest':
     # zip file
     filename = 'qmlview.zip'
     with zipfile.ZipFile(filename, 'w') as my_zip:
-        my_zip.write(folder_name)
+        my_zip.write('dist/qmlview/')
 
 else:
     filename = 'qmlview.tar.gz'
     with tarfile.open(filename, 'w:gz') as my_tar:
-        my_tar.add(folder_name)
+        my_tar.add('./dist/qmlview/')
 
 print(f'filename: {filename}')
 
@@ -32,5 +33,5 @@ with open('token.txt', 'w') as tok:
 cmd = 'gh auth login --with-token < token.txt'
 os.system(cmd)
 print('Authenticated')
-cmd1 = f'gh release create v3.1a5 {filename}'
+cmd1 = f'gh release create v3.1{osn} {filename}'
 os.system(cmd1)
