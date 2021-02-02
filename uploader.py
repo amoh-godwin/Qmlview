@@ -1,4 +1,5 @@
 import sys
+import os
 import email, smtplib, ssl
 
 from email import encoders
@@ -6,7 +7,24 @@ from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
-_, os, password, filename = sys.argv
+import tarfile
+import zipfile
+
+_, os_name, password = sys.argv
+
+folder_name = os.path.realpath('./dist/qmlview/')
+
+# Build archives
+if os_name == 'windows':
+    # zip file
+    filename = 'qmlview.zip'
+    with zipfile.ZipFile(filename, 'w') as my_zip:
+        my_zip.write(folder_name)
+
+else:
+    filename = 'qmlview.tar.gz'
+    with tarfile.open(filename, 'w:gz') as my_tar:
+        my_tar.add(folder_name)
 
 subject = f"Qmlview built {os} application"
 body = f"The attachment contains a built application for Qmlview"
