@@ -153,7 +153,7 @@ def live():
     chk_style()
 
     engine.quit.connect(app.quit)
-    engine.load('qrc:///qml/live.qml')
+    engine.load('./resources/qml/live.qml')
 
 def put_into_frame():
     """
@@ -273,7 +273,7 @@ else:
 
 # if live parameter is used
 if LIVE_SET:
-    live_obj = Live(sys.argv[1])
+    live_obj = Live(os.path.realpath(sys.argv[1]))
     engine.rootObjects()[0].setProperty('__qmlview__live_o_bject', live_obj)
     engine.rootObjects()[0].setProperty('filename', sys.argv[1])
 else:
