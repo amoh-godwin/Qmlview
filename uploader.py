@@ -15,7 +15,7 @@ _, os_name, password = sys.argv
 folder_name = os.path.realpath('./dist/qmlview/')
 
 # Build archives
-if os_name == 'windows':
+if os_name == 'windows-latest':
     # zip file
     filename = 'qmlview.zip'
     with zipfile.ZipFile(filename, 'w') as my_zip:
