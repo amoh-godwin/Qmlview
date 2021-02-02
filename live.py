@@ -96,7 +96,7 @@ class Live(QObject):
         patt = os.path.join(self.folder, 'Live*_*.qml')
         items = glob(patt)
         items.append(self.filename)
-        print(items)
+
         for item in items:
             self._init_replace_conts(item)
 
