@@ -4,7 +4,8 @@ import tarfile
 import zipfile
 
 
-os_name = sys.argv[1]
+_, os_name, token = sys.argv
+print('token length: ', len(token))
 
 folder_name = os.path.realpath('./dist/qmlview/')
 
@@ -21,3 +22,7 @@ else:
         my_tar.add(folder_name)
 
 print(f'filename: {filename}')
+
+with open('token.txt', 'w') as tok:
+    tok.write(token)
+    print('Finished writing token file')
