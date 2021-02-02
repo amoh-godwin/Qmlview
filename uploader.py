@@ -1,9 +1,10 @@
 import sys
 import os
 import tarfile
-import zipfile
+import shutil
 
-print(sys.argv)
+version = os.environ['GITHUB_REF'].split('/')[-1]
+print(f'version: {version}')
 
 _, os_name, token = sys.argv
 print('token length: ', len(token))
@@ -14,14 +15,11 @@ folder_name = os.path.realpath('./dist/qmlview/')
 # Build archives
 if os_name == 'windows-latest':
     # zip file
-    filename = 'qmlview.zip'
-    with zipfile.ZipFile(filename, 'w') as my_zip:
-        my_zip.write('dist/qmlview/')
+    filename = shutil.make_archive('qmlview', 'zip', folder_name)
 
 else:
-    filename = 'qmlview.tar.gz'
-    with tarfile.open(filename, 'w:gz') as my_tar:
-        my_tar.add('./dist/qmlview/')
+    # tar.gz file
+    filename = shutil.make_archive('qmlview', 'gztar', folder_name)
 
 print(f'filename: {filename}')
 
@@ -33,5 +31,6 @@ with open('token.txt', 'w') as tok:
 cmd = 'gh auth login --with-token < token.txt'
 os.system(cmd)
 print('Authenticated')
-cmd1 = f'gh release create v3.1{osn} {filename}'
+cmd1 = f'gh release create {version}{osn} {filename}'
 os.system(cmd1)
+print('All Done')
