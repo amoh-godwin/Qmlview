@@ -27,7 +27,12 @@ jobs:
         pip install PyQt5 pyinstaller
     - name: Build and publish
       env:
-        PASS: ${{ secrets.SECRET_PASS_WORD }}
+        windows-latest: qmlview.zip
+        ubuntu-latest: qmlview.tar.gz
+        macOS-latest: qmlview.tar.gz
       run: |
         pyinstaller qmlview.spec
-        python uploader.py ${{ matrix.os }} ${{ secrets.SECRET_PASS_WORD }}
+        python install_dependencies.py ${{ matrix.os }}
+        python uploader.py ${{ matrix.os }}
+        gh auth login --with-token ${{ secrets.ACCESS_TOKEN }}
+        gh release create v3.1a5 $${{ matrix.os}}
