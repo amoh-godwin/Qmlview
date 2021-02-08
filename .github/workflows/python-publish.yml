@@ -23,10 +23,8 @@ jobs:
         python-version: '3.x'
     - name: Install dependencies
       run: |
-        # python -m pip install --upgrade pip
-        pip install PyQt5 pyinstaller
+        pip install PyQt5, PyQtChart, pyinstaller
     - name: Build and publish
       run: |
         pyinstaller qmlview.spec
-        # python install_dependencies.py ${{ matrix.os }}
         python uploader.py ${{ matrix.os }} ${{ secrets.ACCESS_TOKEN }}
