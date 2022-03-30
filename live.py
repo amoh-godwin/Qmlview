@@ -9,7 +9,7 @@ from random import randrange
 from platform import system
 from glob import glob
 
-from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, QFile, QResource, QIODevice, pyqtProperty
+from PyQt6.QtCore import QObject, pyqtSignal, pyqtSlot, QFile, QResource, QIODevice, pyqtProperty
 
 from misc import Split
 
