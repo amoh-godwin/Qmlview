@@ -13,11 +13,14 @@ from PyQt6.QtCore import QUrl, QResource, QT_VERSION_STR
 from PyQt6.QtGui import QGuiApplication, QIcon
 from PyQt6.QtWidgets import QApplication
 from PyQt6.QtQml import QQmlApplicationEngine
+from PyQt6.QtQuick import QQuickWindow
 
 from func import FixQml, Check
 from frame import PhoneFrame
 from live import Live
 
+
+QQuickWindow.setSceneGraphBackend('software')
 
 QResource.registerResource("_qmlview_resource_.rcc")
 
@@ -290,4 +293,4 @@ if LIVE_SET:
 else:
     pass
 
-house_keeping(app.exec_())
+house_keeping(app.exec())
