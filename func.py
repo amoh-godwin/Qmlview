@@ -1,7 +1,8 @@
 import os
 import re
-from PyQt5.QtCore import QFile, QIODevice, QResource
+from PyQt6.QtCore import QFile, QIODevice, QResource
 QResource.registerResource("_qmlview_resource_.rcc")
+
 
 class Check():
 
