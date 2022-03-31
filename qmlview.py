@@ -9,10 +9,10 @@ import os
 from glob import glob
 from time import sleep
 
-from PyQt5.QtCore import QUrl, QResource, QT_VERSION_STR
-from PyQt5.QtGui import QGuiApplication, QIcon
-from PyQt5.QtWidgets import QApplication
-from PyQt5.QtQml import QQmlApplicationEngine
+from PyQt6.QtCore import QUrl, QResource, QT_VERSION_STR
+from PyQt6.QtGui import QGuiApplication, QIcon
+from PyQt6.QtWidgets import QApplication
+from PyQt6.QtQml import QQmlApplicationEngine
 
 from func import FixQml, Check
 from frame import PhoneFrame

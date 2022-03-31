@@ -4,7 +4,7 @@ Created on Fri Oct 18 12:04:47 2019
 
 @author: Amoh - Gyebi Ampofo
 """
-from PyQt5.QtCore import QFile, QResource, QIODevice
+from PyQt6.QtCore import QFile, QResource, QIODevice
 
 from misc import Split
 

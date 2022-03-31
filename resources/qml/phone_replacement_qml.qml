@@ -1,6 +1,6 @@
-import QtQuick 2.10
-import QtQuick.Controls 2.3
-import QtQuick.Layouts 1.3
+import QtQuick
+import QtQuick.Controls.Basic
+import QtQuick.Layouts
 import "qrc:///qml/others" as Other
 
 ApplicationWindow {
