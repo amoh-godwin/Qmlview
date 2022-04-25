@@ -72,7 +72,6 @@ HELP_PARAMS = {
         '-v': param_version, '--v': param_version,
         '-help': param_help, '--help': param_help,
         '-h': param_help, '--h': param_help}
-VERSION = 'Qt ' +  QT_VERSION_STR
 
 PARAMS = {
         '-phone': param_phone, '--phone': param_phone,
@@ -86,6 +85,8 @@ PARAMS = {
         }
 
 PATH_EG = os.path.join(os.environ['USERPROFILE'], 'main.qml')
+
+VERSION = 'Qt ' +  QT_VERSION_STR
 
 
 def chk_style():
