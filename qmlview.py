@@ -275,15 +275,17 @@ if len(sys.argv) > 1:
 
     if len(sys.argv) > 2:
 
-        if sys.argv[2] in PARAMS:
-            # has a parameter
-            func = PARAMS[sys.argv[2]]
-            # run that param function
-            func()
-        else:
-            print('qmlview error: Invalid Parameter')
-            print_help()
-            house_keeping(3)
+        args = sys.args[2:]
+        for arg in args:
+            if arg in PARAMS:
+                # has a parameter
+                func = PARAMS[arg]
+                # run that param function
+                func()
+            else:
+                print('qmlview error: Invalid Parameter')
+                print_help()
+                house_keeping(3)
     else:
         # it has no other parameter
         run()
