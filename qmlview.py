@@ -49,6 +49,11 @@ def param_phone():
     """
     run_in_frame()
 
+def param_scene_backend():
+    """
+    Parameter for the scene backend
+    """
+    pass
 
 def param_version():
     """
@@ -78,6 +83,7 @@ PARAMS = {
         '-p': param_phone, '--p': param_phone,
         '-live': param_live_reload, '--live': param_live_reload,
         '-l': param_live_reload, '--l': param_live_reload,
+        '-software': param_scene_backend, '--software': param_scene_backend,
         '-version': param_version, '--version': param_version,
         '-v': param_version, '--v': param_version,
         '-help': param_help, '--help': param_help,
