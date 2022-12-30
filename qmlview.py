@@ -237,6 +237,12 @@ Note: Help works even without a source specified.
 
 if len(sys.argv) > 1:
 
+    
+    if sys.argv[1] in PARAMS:
+        func = PARAMS[sys.argv[1]]
+        # run that param function
+        func()
+
     # if help param
     if sys.argv[1] in HELP_PARAMS:
         # it is a parameter
