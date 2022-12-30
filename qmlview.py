@@ -274,7 +274,7 @@ if len(sys.argv) > 1:
 
     if len(sys.argv) > 2:
 
-        args = sys.args[2:]
+        args = sys.argv[2:]
         for arg in args:
             if arg in PARAMS:
                 # has a parameter
