@@ -52,7 +52,9 @@ def param_scene_backend():
     Parameter for the scene backend
     When called default to software
     """
+    print('sdfj')
     QQuickWindow.setSceneGraphBackend('software')
+    print('sdf')
 
 def param_version():
     """
@@ -82,12 +84,15 @@ PARAMS = {
         '-p': param_phone, '--p': param_phone,
         '-live': param_live_reload, '--live': param_live_reload,
         '-l': param_live_reload, '--l': param_live_reload,
-        '-software': param_scene_backend, '--software': param_scene_backend,
         '-version': param_version, '--version': param_version,
         '-v': param_version, '--v': param_version,
         '-help': param_help, '--help': param_help,
         '-h': param_help, '--h': param_help
         }
+PRE_RUN_PARAMS = {
+    '-software': param_scene_backend, '--software': param_scene_backend
+}
+PRE_RUN_PARAMS_TUPLE = ('-software', '--software')
 
 PATH_EG = os.path.join(os.environ['USERPROFILE'], 'main.qml')
 
@@ -234,23 +239,28 @@ eg:
 Note: Help works even without a source specified.
 ''')
 
+arg_len = len(sys.argv)
+args = sys.argv
 
-if len(sys.argv) > 1:
+if arg_len > 2:
+    for param in PRE_RUN_PARAMS_TUPLE:
+        if param in args:
+            func = PRE_RUN_PARAMS[param]
+            # run that param function
+            func()
+            args.remove(param)
+            arg_len -= 1
 
-    
-    if sys.argv[1] in PARAMS:
-        func = PARAMS[sys.argv[1]]
-        # run that param function
-        func()
+if arg_len > 1:
 
     # if help param
-    if sys.argv[1] in HELP_PARAMS:
+    if args[1] in HELP_PARAMS:
         # it is a parameter
-        help_func = HELP_PARAMS[sys.argv[1]]
+        help_func = HELP_PARAMS[args[1]]
         # run that param function
         help_func()
     # if files exist
-    elif os.path.exists(sys.argv[1]):
+    elif os.path.exists(args[1]):
         """
         Qt Charts require QApplication.
         And so we use that if the qml code imports QtCharts
@@ -258,7 +268,7 @@ if len(sys.argv) > 1:
         statement but not in a function
         """
         # Check if it import QtCharts
-        chk = Check(sys.argv[1])
+        chk = Check(args[1])
         contains_qtchart = chk.check_for_qtcharts()
         # use that to decide what to use
         if contains_qtchart:
@@ -270,7 +280,7 @@ if len(sys.argv) > 1:
         app.aboutToQuit.connect(clean_up)
         engine = QQmlApplicationEngine()
     else:
-        print('qmlview error: File Not Found [{0}]'.format(sys.argv[1]))
+        print('qmlview error: File Not Found [{0}]'.format(args[1]))
         print('Please write Filepath in full.')
         print('    Eg:', PATH_EG)
         print('or Do: qmlview -help or --help: for help')
@@ -278,9 +288,8 @@ if len(sys.argv) > 1:
 
     # check if it comes with parameters
 
-    if len(sys.argv) > 2:
+    if arg_len > 2:
 
-        args = sys.argv[2:]
         for arg in args:
             if arg in PARAMS:
                 # has a parameter
@@ -288,7 +297,7 @@ if len(sys.argv) > 1:
                 # run that param function
                 func()
             else:
-                print('qmlview error: Invalid Parameter')
+                print(f'qmlview error: Invalid Parameter: {arg}')
                 print_help()
                 house_keeping(3)
     else:
@@ -301,9 +310,9 @@ else:
 
 # if live parameter is used
 if LIVE_SET:
-    live_obj = Live(os.path.realpath(sys.argv[1]))
+    live_obj = Live(os.path.realpath(args[1]))
     engine.rootObjects()[0].setProperty('__qmlview__live_o_bject', live_obj)
-    engine.rootObjects()[0].setProperty('filename', sys.argv[1])
+    engine.rootObjects()[0].setProperty('filename', args[1])
 else:
     pass
 
