@@ -20,8 +20,6 @@ from frame import PhoneFrame
 from live import Live
 
 
-QQuickWindow.setSceneGraphBackend('software')
-
 QResource.registerResource("_qmlview_resource_.rcc")
 
 LIVE_SET = False
@@ -52,8 +50,9 @@ def param_phone():
 def param_scene_backend():
     """
     Parameter for the scene backend
+    When called default to software
     """
-    pass
+    QQuickWindow.setSceneGraphBackend('software')
 
 def param_version():
     """
