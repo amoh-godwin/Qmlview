@@ -52,9 +52,7 @@ def param_scene_backend():
     Parameter for the scene backend
     When called default to software
     """
-    print('sdfj')
     QQuickWindow.setSceneGraphBackend('software')
-    print('sdf')
 
 def param_version():
     """
