@@ -92,9 +92,14 @@ PARAMS = {
 PRE_RUN_PARAMS = {
     '-software': param_scene_backend, '--software': param_scene_backend,
     '-openvg': param_scene_backend, '--openvg': param_scene_backend,
-    '-rhi': param_scene_backend, '--rhi': param_scene_backend
+    '-rhi': param_scene_backend, '--rhi': param_scene_backend,
+    '-gtk': param_scene_backend, '--gtk': param_scene_backend
 }
-PRE_RUN_PARAMS_TUPLE = ('-software', '--software', '-openvg', '--openvg', '-rhi', '--rhi')
+PRE_RUN_PARAMS_TUPLE = (
+    '-software', '--software',
+    '-openvg', '--openvg',
+    '-rhi', '--rhi',
+    '-gtk', '--gtk')
 
 PATH_EG = os.path.join(os.environ['USERPROFILE'], 'main.qml')
 
