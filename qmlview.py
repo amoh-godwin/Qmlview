@@ -69,6 +69,7 @@ def clean_up():
     Function to clean up all our letfover files
     before exiting
     """
+    pass
 
 
 ERROR_CODES = {1: 'Qml rootObject Could Not Be Created', 2: 'File Not Found',
