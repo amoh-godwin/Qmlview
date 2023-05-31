@@ -54,7 +54,7 @@ def param_scene_backend(param):
     """
     c_param = param.replace('-', '')
     print(f'Using parameter: {c_param}')
-    QQuickWindow.setSceneGraphBackend(c_param)
+    QQuickWindow.setSceneGraphBackend(str(c_param))
 
 def param_version():
     """
@@ -255,6 +255,7 @@ if arg_len > 2:
         if param in args:
             func = PRE_RUN_PARAMS[param]
             # run that param function
+            print(f"Sending param {param} into {func}")
             func(param)
             args.remove(param)
             arg_len -= 1
