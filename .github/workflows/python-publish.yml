@@ -23,7 +23,7 @@ jobs:
         python-version: '3.x'
     - name: Install dependencies
       run: |
-        pip install PyQt6-Qt6==6.5.1 PyQt6 PyQt6-Charts pyinstaller
+        pip install PyQt6 PyQt6-Charts pyinstaller
     - name: Build and publish
       run: |
         pyinstaller qmlview.spec
